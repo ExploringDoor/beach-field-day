@@ -20,7 +20,7 @@ var SEASON_START = new Date(2026, 5, 27); // Sat, Jun 27, 2026
 var SEASON_END   = new Date(2026, 7, 30); // Sun, Aug 30, 2026
 
 // ── Payment details (UPDATE THESE to your real handles) ──────────────────────
-var VENMO_HANDLE  = '@BeachFieldDay';      // ← your Venmo username
+var VENMO_HANDLE  = '@Adam-Miller-23';      // ← your Venmo username
 var ZELLE_CONTACT = '(610) 804-9222';      // ← your Zelle phone number or email
 var DAY_RATE      = 80;                     // $ per child, per day
 
