@@ -4,7 +4,7 @@
 
 // Paste the Apps Script Web App URL here after you deploy scripts/registration-endpoint.gs
 // (it ends in /exec). Until then, the form runs in "demo mode" and won't save.
-export const REGISTRATION_ENDPOINT = ''
+export const REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxZViIOl_tr5GmkuhT3SGk6v6EI7aHrF_9mUVjKhEKkNPXpmE8DM9NjO5KiN-mJUaCXMg/exec'
 
 // Payment
 export const VENMO_HANDLE = '@Adam-Miller-23'
