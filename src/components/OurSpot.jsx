@@ -31,7 +31,7 @@ export default function OurSpot() {
             More than just <em>sand</em>.
           </h2>
           <p className="section-lede mx-auto text-center">
-            We're not just a generic "we'll be at the beach" program. Our home base has courts, grass, shade, and a bathroom — everything we need to run a real day of activities, rain or shine, hot or cool.
+            We're not just a generic "we'll be at the beach" program. Our home base has courts, grass, shade, and a bathroom — everything we need to run a real day of activities, whether it's blazing hot or breezy and cool.
           </p>
         </div>
 
