@@ -64,6 +64,14 @@
   .section-lede {
     @apply text-[19px] text-ink-soft max-w-2xl mb-14 leading-relaxed;
   }
+
+  .bfd-input {
+    @apply w-full rounded-xl border-[1.5px] border-ocean/15 bg-cream px-4 py-3 text-[15px] text-ink outline-none transition-colors;
+  }
+  .bfd-input:focus {
+    @apply border-sunset;
+    box-shadow: 0 0 0 3px rgba(232, 122, 74, 0.15);
+  }
 }
 
 /* Hero wavy sand strip */

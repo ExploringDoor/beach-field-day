@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { REGISTER_URL } from '../App.jsx'
 
 export default function Nav() {
@@ -26,14 +27,12 @@ export default function Nav() {
           <a href="#info" className="text-ink-soft transition-colors hover:text-ocean-deep">Parent Info</a>
           <a href="#faq" className="text-ink-soft transition-colors hover:text-ocean-deep">FAQ</a>
         </div>
-        <a
-          href={REGISTER_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to={REGISTER_URL}
           className="rounded-full bg-sunset px-5 py-2.5 text-sm font-bold text-cream transition-all hover:-translate-y-px hover:bg-sunset-deep"
         >
           Register
-        </a>
+        </Link>
       </div>
     </nav>
   )

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { REGISTER_URL } from '../App.jsx'
 
 export default function FinalCTA() {
@@ -21,14 +22,12 @@ export default function FinalCTA() {
       <p className="relative z-10 mb-9 text-[19px] opacity-90">
         Click below to register. Spots are limited per session.
       </p>
-      <a
-        href={REGISTER_URL}
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
+        to={REGISTER_URL}
         className="relative z-10 inline-flex items-center gap-2 rounded-full bg-cream px-10 py-5 text-[18px] font-bold text-ocean-deep transition-all hover:-translate-y-0.5 hover:bg-sand-light"
       >
-        Register on Google Form →
-      </a>
+        Register Your Child →
+      </Link>
     </section>
   )
 }

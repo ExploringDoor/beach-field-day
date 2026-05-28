@@ -10,7 +10,8 @@ import FinalCTA from './components/FinalCTA.jsx'
 import Footer from './components/Footer.jsx'
 import { useScrollReveal } from './hooks/useScrollReveal.js'
 
-export const REGISTER_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSepk9HvbAp9FdRa1zV2M1GLhPp_FPEma6ljNzkKf96MNUVcJQ/viewform'
+// All "Register" CTAs link to the on-site form at /register
+export const REGISTER_URL = '/register'
 
 export default function App() {
   useScrollReveal()
