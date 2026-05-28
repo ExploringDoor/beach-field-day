@@ -29,7 +29,7 @@ function createBeachFieldDayForm() {
     'Questions? Email hello@beachfieldday.com or text (610) 804-9222.'
   );
 
-  form.setCollectEmail(true);          // auto-captures the signed-in Google email
+  form.setCollectEmail(false);          // we ask for email explicitly, so no forced Google login
   form.setProgressBar(true);
   form.setShowLinkToRespondAgain(true); // lets a parent register a second child easily
 
@@ -38,36 +38,15 @@ function createBeachFieldDayForm() {
     .requireTextIsEmail()
     .build();
 
-  // ── CHILD ──────────────────────────────────────────────────────────────────
-  form.addSectionHeaderItem().setTitle('Your Child');
-
-  form.addTextItem()
-    .setTitle("Child's full name")
-    .setRequired(true);
-
-  form.addListItem()
-    .setTitle("Child's age")
-    .setChoiceValues(['4', '5', '6', '7', '8', '9'])
-    .setRequired(true);
-
-  form.addTextItem()
-    .setTitle('Grade entering Fall 2026')
-    .setHelpText('e.g. Pre-K, Kindergarten, 1st, 2nd…')
-    .setRequired(true);
-
-  form.addParagraphTextItem()
-    .setTitle('T-shirt size')
-    .setHelpText('Youth XS / S / M / L (or note if adult size needed)');
-
   // ── PARENT / GUARDIAN ────────────────────────────────────────────────────────
   form.addSectionHeaderItem().setTitle('Parent / Guardian');
 
   form.addTextItem()
-    .setTitle('Parent / guardian name(s)')
+    .setTitle('First name')
     .setRequired(true);
 
   form.addTextItem()
-    .setTitle('Best phone number (for day-of texts)')
+    .setTitle('Last name')
     .setRequired(true);
 
   form.addTextItem()
@@ -75,26 +54,43 @@ function createBeachFieldDayForm() {
     .setValidation(emailRule)
     .setRequired(true);
 
-  // ── EMERGENCY + PICKUP ───────────────────────────────────────────────────────
-  form.addSectionHeaderItem().setTitle('Emergency & Pick-up');
+  form.addTextItem()
+    .setTitle('Phone number')
+    .setHelpText('Best number for day-of texts.')
+    .setRequired(true);
 
   form.addTextItem()
-    .setTitle('Emergency contact — name & phone')
+    .setTitle('Address')
+    .setRequired(false);
+
+  // ── CHILD ────────────────────────────────────────────────────────────────────
+  form.addSectionHeaderItem().setTitle('Your Child');
+
+  form.addTextItem()
+    .setTitle("Child's name")
+    .setRequired(true);
+
+  form.addListItem()
+    .setTitle("Child's age")
+    .setChoiceValues(['4', '5', '6', '7', '8', '9'])
+    .setRequired(false);
+
+  // ── EMERGENCY & HEALTH ───────────────────────────────────────────────────────
+  form.addSectionHeaderItem().setTitle('Emergency & Health');
+
+  form.addTextItem()
+    .setTitle('Emergency contact & number')
     .setHelpText('Someone OTHER than the parent above.')
     .setRequired(true);
 
   form.addParagraphTextItem()
-    .setTitle('Authorized pick-up names')
-    .setHelpText('List every adult allowed to pick up your child. Photo ID is checked at pickup.')
+    .setTitle("Child's allergies or restrictions?")
+    .setHelpText('Write "None" if not applicable. Reviewed daily by staff.')
     .setRequired(true);
-
-  // ── MEDICAL ──────────────────────────────────────────────────────────────────
-  form.addSectionHeaderItem().setTitle('Health & Safety');
 
   form.addParagraphTextItem()
-    .setTitle('Allergies, medical conditions, or medications')
-    .setHelpText('Write "None" if not applicable. This is reviewed daily by staff.')
-    .setRequired(true);
+    .setTitle('Anything else we should know?')
+    .setRequired(false);
 
   // ── DAYS REQUESTED ───────────────────────────────────────────────────────────
   form.addSectionHeaderItem()
@@ -111,27 +107,6 @@ function createBeachFieldDayForm() {
     .setHelpText('If yes, pack a small lunch on those days.')
     .setChoiceValues(['No thanks — pick up at Noon', 'Yes — stay until 1pm (+$30/day)'])
     .setRequired(true);
-
-  // ── CONSENTS ─────────────────────────────────────────────────────────────────
-  form.addSectionHeaderItem().setTitle('Consent & Waiver');
-
-  form.addCheckboxItem()
-    .setTitle('Photo / video consent')
-    .setChoiceValues(['I allow Beach Field Day to use photos/videos of my child for promotion.'])
-    .setRequired(false);
-
-  form.addCheckboxItem()
-    .setTitle('Liability waiver')
-    .setHelpText(
-      'I acknowledge that beach activities carry inherent risks. I release Beach Field Day ' +
-      'and its staff from liability for injuries except those caused by gross negligence. ' +
-      'I confirm my child is healthy enough to participate.'
-    )
-    .setChoiceValues(['I have read and agree to the liability waiver.'])
-    .setRequired(true);
-
-  form.addParagraphTextItem()
-    .setTitle('How did you hear about us?');
 
   // ── DONE ─────────────────────────────────────────────────────────────────────
   var editUrl = form.getEditUrl();
