@@ -37,7 +37,7 @@ export default function OurSpot() {
 
         <figure className="reveal mb-14 overflow-hidden rounded-[24px] border border-ocean/10 shadow-[0_20px_40px_rgba(43,107,140,0.18)]">
           <img
-            src="/fieldandbasketballcourts.png"
+            src="/fieldandbasketballcourts.jpg"
             alt="Aerial view of the Longport basketball courts, grass field, gazebo, and beach at 35th and Atlantic"
             className="block w-full"
             loading="lazy"
