@@ -19,6 +19,11 @@
 var SEASON_START = new Date(2026, 5, 27); // Sat, Jun 27, 2026
 var SEASON_END   = new Date(2026, 7, 30); // Sun, Aug 30, 2026
 
+// ── Payment details (UPDATE THESE to your real handles) ──────────────────────
+var VENMO_HANDLE  = '@BeachFieldDay';      // ← your Venmo username
+var ZELLE_CONTACT = '(610) 804-9222';      // ← your Zelle phone number or email
+var DAY_RATE      = 80;                     // $ per child, per day
+
 function createBeachFieldDayForm() {
   var form = FormApp.create('Beach Field Day — Registration');
 
@@ -107,6 +112,40 @@ function createBeachFieldDayForm() {
     .setHelpText('If yes, pack a small lunch on those days.')
     .setChoiceValues(['No thanks — pick up at Noon', 'Yes — stay until 1pm (+$30/day)'])
     .setRequired(true);
+
+  // ── PAYMENT ──────────────────────────────────────────────────────────────────
+  form.addSectionHeaderItem()
+    .setTitle('Payment')
+    .setHelpText(
+      '$' + DAY_RATE + ' per child, per day (+$30 for any extended-stay days). ' +
+      'Send payment after you submit:\n' +
+      '   • Venmo: ' + VENMO_HANDLE + '\n' +
+      '   • Zelle: ' + ZELLE_CONTACT + '\n\n' +
+      "⚠️ Your child's spot is NOT confirmed until payment is received."
+    );
+
+  form.addMultipleChoiceItem()
+    .setTitle('How will you be paying?')
+    .setChoiceValues(['Venmo (' + VENMO_HANDLE + ')', 'Zelle (' + ZELLE_CONTACT + ')'])
+    .setRequired(true);
+
+  form.addCheckboxItem()
+    .setTitle('Payment acknowledgment')
+    .setHelpText('Please confirm you understand the payment policy.')
+    .setRequiredCheckbox('I understand my child is not confirmed until payment is sent.')
+    .setRequired(true);
+
+  // ── CONFIRMATION SCREEN ──────────────────────────────────────────────────────
+  form.setConfirmationMessage(
+    'Thanks for registering! 🏖️\n\n' +
+    "Your child's spot is NOT yet confirmed. To lock it in, send payment now:\n\n" +
+    '   • Venmo: ' + VENMO_HANDLE + '\n' +
+    '   • Zelle: ' + ZELLE_CONTACT + '\n\n' +
+    'Amount: $' + DAY_RATE + ' per child, per day (+$30 per extended-stay day). ' +
+    'Please put your child\'s name in the payment note.\n\n' +
+    "We'll text you to confirm once payment is received. " +
+    'Questions? Text (610) 804-9222.'
+  );
 
   // ── DONE ─────────────────────────────────────────────────────────────────────
   var editUrl = form.getEditUrl();

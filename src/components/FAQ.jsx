@@ -29,7 +29,7 @@ const FAQS = [
   },
   {
     q: 'How do I pay?',
-    a: 'Registration is done through our Google Form. Payment is accepted via Venmo or Zelle, with details sent after registration is confirmed.',
+    a: 'Register through our online form, then send payment via Venmo or Zelle — the payment details are shown right on the form and on the confirmation screen. Your child\'s spot is not confirmed until payment is received.',
   },
   {
     q: 'Are weekday sessions coming?',
