@@ -87,20 +87,22 @@ function saveRow_(data) {
     sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
   }
-  // Force date/phone columns to PLAIN TEXT so Sheets doesn't turn
-  // "Sat, Jun 27" into a Date or drop leading zeros from phone numbers.
-  forceTextColumns_(sheet, ['phone', 'days', 'extendedDays']);
-
   var row = FIELDS.map(function (f) { return data[f[0]] !== undefined ? data[f[0]] : ''; });
   row.push('');
   sheet.appendRow(row);
-}
 
-function forceTextColumns_(sheet, keys) {
-  keys.forEach(function (k) {
+  // Re-write date/phone cells as PLAIN TEXT so Sheets doesn't turn a lone
+  // "Sat, Jul 4" into a Date or drop leading zeros from phone numbers.
+  // (appendRow coerces on its own; setting format THEN value is the reliable fix.)
+  var r = sheet.getLastRow();
+  ['phone', 'days', 'extendedDays'].forEach(function (k) {
     var idx = -1;
     for (var i = 0; i < FIELDS.length; i++) { if (FIELDS[i][0] === k) { idx = i + 1; break; } }
-    if (idx > 0) sheet.getRange(1, idx, sheet.getMaxRows(), 1).setNumberFormat('@');
+    if (idx > 0) {
+      var cell = sheet.getRange(r, idx);
+      cell.setNumberFormat('@');
+      cell.setValue(String(data[k] !== undefined ? data[k] : ''));
+    }
   });
 }
 
