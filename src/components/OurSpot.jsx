@@ -34,6 +34,20 @@ export default function OurSpot() {
             We're not just a generic "we'll be at the beach" program. Our home base has courts, grass, shade, and a bathroom — everything we need to run a real day of activities, rain or shine, hot or cool.
           </p>
         </div>
+
+        <figure className="reveal mb-14 overflow-hidden rounded-[24px] border border-ocean/10 shadow-[0_20px_40px_rgba(43,107,140,0.18)]">
+          <img
+            src="/fieldandbasketballcourts.png"
+            alt="Aerial view of the Longport basketball courts, grass field, gazebo, and beach at 35th and Atlantic"
+            className="block w-full"
+            loading="lazy"
+          />
+          <figcaption className="bg-ocean-deep px-6 py-4 text-center text-[14px] font-medium text-sand-light">
+            <span className="font-display text-[16px] font-bold text-cream">35th &amp; Atlantic, Longport, NJ</span>
+            <span className="opacity-70"> — gazebo, grass field, basketball courts, and the beach right behind it.</span>
+          </figcaption>
+        </figure>
+
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {AMENITIES.map((a) => (
             <div

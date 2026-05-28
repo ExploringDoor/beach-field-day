@@ -9,7 +9,7 @@ const FAQS = [
   },
   {
     q: 'Where exactly do you meet?',
-    a: 'We meet at the Longport basketball courts. From there we use the courts, the adjacent grass field, the gazebo for shade, and the beach itself. Specific meet-up details are sent to all registered families before each session.',
+    a: 'We meet at the basketball courts at 35th and Atlantic in Longport. From there we use the courts, the adjacent grass field, the gazebo for shade, and the beach itself. Specific drop-off details are sent to all registered families before each session.',
   },
   {
     q: 'Is there shade and a bathroom on site?',
