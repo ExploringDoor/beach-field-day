@@ -132,7 +132,7 @@ function createBeachFieldDayForm() {
   form.addCheckboxItem()
     .setTitle('Payment acknowledgment')
     .setHelpText('Please confirm you understand the payment policy.')
-    .setRequiredCheckbox('I understand my child is not confirmed until payment is sent.')
+    .setChoiceValues(['I understand my child is not confirmed until payment is sent.'])
     .setRequired(true);
 
   // ── CONFIRMATION SCREEN ──────────────────────────────────────────────────────
