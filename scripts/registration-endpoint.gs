@@ -139,6 +139,25 @@ function listAll_() {
   return out;
 }
 
+/**
+ * Helper: prints the registrations sheet's URL to the Execution log.
+ * Select "showSheetUrl" in the function dropdown and click Run — no deploy needed.
+ * Open the printed link while signed in to THIS Google account.
+ */
+function showSheetUrl() {
+  Logger.log('Your registrations sheet: ' + getSpreadsheet_().getUrl());
+}
+
+/**
+ * Helper: wipes ALL rows so the next registration rebuilds the new headers.
+ * Run this once (instead of deleting rows by hand) if the sheet has old test data.
+ */
+function clearAllRows() {
+  var sheet = getSpreadsheet_().getSheets()[0];
+  sheet.clear();
+  Logger.log('Sheet cleared. Next registration will create fresh headers.');
+}
+
 function getSpreadsheet_() {
   var props = PropertiesService.getScriptProperties();
   var id = props.getProperty('SHEET_ID');
