@@ -14,8 +14,8 @@ export default function Footer() {
           Longport, NJ · Saturdays &amp; Sundays · Summer 2026
         </div>
         <div className="mb-8 flex flex-wrap justify-center gap-6 text-[15px]">
-          <a href="mailto:hello@beachfieldday.com" className="text-sand-light transition-colors hover:text-coral">
-            hello@beachfieldday.com
+          <a href="mailto:adam.miller.22@gmail.com" className="text-sand-light transition-colors hover:text-coral">
+            adam.miller.22@gmail.com
           </a>
           <span className="opacity-40">·</span>
           <a href="tel:6108049222" className="text-sand-light transition-colors hover:text-coral">
