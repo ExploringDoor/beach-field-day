@@ -16,6 +16,12 @@ export const CONTACT_EMAIL = 'adam.miller.22@gmail.com'
 export const DAY_RATE = 80
 export const EXTENDED_RATE = 30
 
+// Max kids per day. When a date reaches this, it shows as "Full".
+export const CAPACITY = 40
+
+// Separator used between dates in the Days / Extended fields (must match the Apps Script).
+export const DAY_SEP = ' | '
+
 // Season window for the "Which days?" checkboxes (months are 0-indexed: 5 = June)
 const SEASON_START = new Date(2026, 5, 27) // Sat, Jun 27, 2026
 const SEASON_END = new Date(2026, 7, 30) // Sun, Aug 30, 2026

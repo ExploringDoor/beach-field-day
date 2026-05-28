@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   REGISTRATION_ENDPOINT,
@@ -7,8 +7,11 @@ import {
   CONTACT_PHONE,
   DAY_RATE,
   EXTENDED_RATE,
+  CAPACITY,
+  DAY_SEP,
   weekendDates,
 } from '../config.js'
+import { jsonp } from '../jsonp.js'
 
 const DAYS = weekendDates()
 
@@ -44,8 +47,8 @@ const EMPTY = {
   emergency: '',
   allergies: '',
   notes: '',
-  days: [],
-  extended: '',
+  days: [], // selected date strings
+  extendedDays: [], // subset of days marked "until 1pm"
   payment: '',
   paymentAck: false,
   waiverAgree: false,
@@ -56,18 +59,57 @@ export default function RegisterPage() {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | submitting | done | error
+  const [counts, setCounts] = useState(null) // {date: bookedCount} or null while loading
+  const [total, setTotal] = useState(0)
+
+  // Fetch current per-day booked counts so we can show "Full" dates.
+  useEffect(() => {
+    let alive = true
+    if (!REGISTRATION_ENDPOINT) { setCounts({}); return }
+    jsonp(REGISTRATION_ENDPOINT, { action: 'counts' })
+      .then((res) => { if (alive) setCounts((res && res.counts) || {}) })
+      .catch(() => { if (alive) setCounts({}) }) // degrade gracefully: no caps if it fails
+    return () => { alive = false }
+  }, [])
+
+  // Keep the live total in sync.
+  useEffect(() => {
+    setTotal(form.days.length * DAY_RATE + form.extendedDays.length * EXTENDED_RATE)
+  }, [form.days, form.extendedDays])
 
   function set(field, value) {
     setForm((f) => ({ ...f, [field]: value }))
     if (errors[field]) setErrors((e) => ({ ...e, [field]: undefined }))
   }
 
+  function isFull(day) {
+    return counts ? (counts[day] || 0) >= CAPACITY : false
+  }
+  function spotsLeft(day) {
+    if (!counts) return null
+    return Math.max(0, CAPACITY - (counts[day] || 0))
+  }
+
   function toggleDay(day) {
+    if (isFull(day)) return
+    setForm((f) => {
+      const selected = f.days.includes(day)
+      return {
+        ...f,
+        days: selected ? f.days.filter((d) => d !== day) : [...f.days, day],
+        extendedDays: selected ? f.extendedDays.filter((d) => d !== day) : f.extendedDays,
+      }
+    })
+    if (errors.days) setErrors((e) => ({ ...e, days: undefined }))
+  }
+
+  function toggleExtend(day) {
     setForm((f) => ({
       ...f,
-      days: f.days.includes(day) ? f.days.filter((d) => d !== day) : [...f.days, day],
+      extendedDays: f.extendedDays.includes(day)
+        ? f.extendedDays.filter((d) => d !== day)
+        : [...f.extendedDays, day],
     }))
-    if (errors.days) setErrors((e) => ({ ...e, days: undefined }))
   }
 
   function validate() {
@@ -80,7 +122,6 @@ export default function RegisterPage() {
     if (!form.emergency.trim()) e.emergency = 'Required'
     if (!form.allergies.trim()) e.allergies = 'Required (write "None" if none)'
     if (form.days.length === 0) e.days = 'Pick at least one day'
-    if (!form.extended) e.extended = 'Required'
     if (!form.payment) e.payment = 'Required'
     if (!form.paymentAck) e.paymentAck = 'Please acknowledge'
     if (!form.waiverAgree) e.waiverAgree = 'You must agree to register'
@@ -93,17 +134,17 @@ export default function RegisterPage() {
     const e = validate()
     setErrors(e)
     if (Object.keys(e).length > 0) {
-      // scroll to first error
       const first = document.querySelector('[data-error="true"]')
       if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
     }
 
     setStatus('submitting')
-
     const payload = {
       ...form,
-      days: form.days.join(', '),
+      days: form.days.join(DAY_SEP),
+      extendedDays: form.extendedDays.join(DAY_SEP),
+      total,
       submittedAt: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
     }
 
@@ -124,13 +165,13 @@ export default function RegisterPage() {
   }
 
   if (status === 'done') {
-    return <SuccessScreen form={form} />
+    return <SuccessScreen form={form} total={total} />
   }
 
   return (
     <div className="min-h-screen bg-cream">
       <FormHeader />
-      <main className="mx-auto max-w-[760px] px-5 pb-24 pt-28 sm:pt-32">
+      <main className="mx-auto max-w-[760px] px-5 pb-40 pt-28 sm:pt-32">
         <div className="mb-8 text-center">
           <span className="section-eyebrow">Registration</span>
           <h1 className="mx-auto text-[clamp(32px,6vw,48px)] text-ocean-deep">
@@ -195,48 +236,86 @@ export default function RegisterPage() {
           </Section>
 
           {/* DAYS */}
-          <Section title="Which days?" subtitle={`Check every day you want. $${DAY_RATE} per child, per day.`}>
-            <div data-error={!!errors.days} className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {DAYS.map((day) => {
-                const checked = form.days.includes(day)
-                return (
-                  <button
-                    type="button"
-                    key={day}
-                    onClick={() => toggleDay(day)}
-                    className={
-                      'rounded-xl border-[1.5px] px-3 py-3 text-left text-[14px] font-medium transition-all ' +
-                      (checked
-                        ? 'border-sunset bg-sunset/10 text-ocean-deep'
-                        : 'border-ocean/15 bg-cream text-ink-soft hover:border-ocean-light')
-                    }
-                  >
-                    <span className="mr-1.5">{checked ? '☑' : '☐'}</span>
-                    {day}
-                  </button>
-                )
-              })}
-            </div>
-            {errors.days && <ErrorText>{errors.days}</ErrorText>}
-
-            <div className="mt-5" data-error={!!errors.extended}>
-              <p className="mb-2 text-[14px] font-bold text-ocean-deep">
-                Add the extended stay (until 1pm) for +${EXTENDED_RATE}/day?
-              </p>
-              <div className="space-y-2">
-                <Radio name="extended" label="No thanks — pick up at Noon" value="No" current={form.extended} onChange={(v) => set('extended', v)} />
-                <Radio name="extended" label={`Yes — stay until 1pm (+$${EXTENDED_RATE}/day)`} value="Yes" current={form.extended} onChange={(v) => set('extended', v)} />
+          <Section
+            title="Pick your days"
+            subtitle={`Tap a day to add it ($${DAY_RATE}). Once selected, you can add "until 1pm" for that day (+$${EXTENDED_RATE}).`}
+          >
+            {counts === null ? (
+              <p className="text-[14px] text-ink-soft">Checking availability…</p>
+            ) : (
+              <div data-error={!!errors.days} className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                {DAYS.map((day) => {
+                  const selected = form.days.includes(day)
+                  const extended = form.extendedDays.includes(day)
+                  const full = isFull(day)
+                  const left = spotsLeft(day)
+                  return (
+                    <div
+                      key={day}
+                      className={
+                        'rounded-xl border-[1.5px] p-2.5 transition-all ' +
+                        (full
+                          ? 'border-ink/10 bg-ink/5 opacity-60'
+                          : selected
+                          ? 'border-sunset bg-sunset/10'
+                          : 'border-ocean/15 bg-cream')
+                      }
+                    >
+                      <button
+                        type="button"
+                        disabled={full}
+                        onClick={() => toggleDay(day)}
+                        className={'flex w-full items-start gap-2 text-left text-[14px] font-medium ' + (full ? 'cursor-not-allowed text-ink-soft' : 'text-ocean-deep')}
+                      >
+                        <span className="mt-0.5">{full ? '🔒' : selected ? '☑' : '☐'}</span>
+                        <span>
+                          {day}
+                          <span className="mt-0.5 block text-[11px] font-normal text-ink-soft">
+                            {full ? 'Full' : left != null && left <= 8 ? `${left} spot${left === 1 ? '' : 's'} left` : ''}
+                          </span>
+                        </span>
+                      </button>
+                      {selected && !full && (
+                        <button
+                          type="button"
+                          onClick={() => toggleExtend(day)}
+                          className={
+                            'mt-2 w-full rounded-lg border px-2 py-1.5 text-[12px] font-semibold transition-all ' +
+                            (extended
+                              ? 'border-ocean bg-ocean/10 text-ocean-deep'
+                              : 'border-ocean/20 bg-cream text-ink-soft hover:border-ocean-light')
+                          }
+                        >
+                          {extended ? `✓ Until 1pm (+$${EXTENDED_RATE})` : `+ Stay until 1pm (+$${EXTENDED_RATE})`}
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
-              {errors.extended && <ErrorText>{errors.extended}</ErrorText>}
-            </div>
+            )}
+            {errors.days && <ErrorText>{errors.days}</ErrorText>}
           </Section>
+
+          {/* TOTAL */}
+          <div className="rounded-3xl bg-ocean-deep p-6 text-cream sm:p-8">
+            <p className="font-display text-[20px] font-bold">Your total</p>
+            <div className="mt-3 space-y-1 text-[15px] text-sand-light">
+              <Line label={`${form.days.length} day${form.days.length === 1 ? '' : 's'} × $${DAY_RATE}`} value={form.days.length * DAY_RATE} />
+              {form.extendedDays.length > 0 && (
+                <Line label={`${form.extendedDays.length} extended × $${EXTENDED_RATE}`} value={form.extendedDays.length * EXTENDED_RATE} />
+              )}
+            </div>
+            <div className="mt-3 flex items-end justify-between border-t border-cream/20 pt-3">
+              <span className="text-[15px] font-medium text-sand-light">Total to send</span>
+              <span className="font-display text-[34px] font-black leading-none text-coral">${total}</span>
+            </div>
+          </div>
 
           {/* PAYMENT */}
           <Section title="Payment">
-            <div
-              className="mb-4 rounded-2xl border border-sunset/30 bg-sand-light/60 p-4 text-[14px] text-ink-soft"
-            >
-              <p className="font-bold text-ocean-deep">After you submit, send payment:</p>
+            <div className="mb-4 rounded-2xl border border-sunset/30 bg-sand-light/60 p-4 text-[14px] text-ink-soft">
+              <p className="font-bold text-ocean-deep">After you submit, send <strong>${total}</strong> with your child's name in the note:</p>
               <p className="mt-1">• Venmo: <strong>{VENMO_HANDLE}</strong></p>
               <p>• Zelle: <strong>{ZELLE_CONTACT}</strong></p>
               <p className="mt-2 font-semibold text-sunset-deep">
@@ -296,11 +375,9 @@ export default function RegisterPage() {
             disabled={status === 'submitting'}
             className="btn-primary w-full justify-center !py-5 text-[17px] disabled:opacity-60"
           >
-            {status === 'submitting' ? 'Submitting…' : 'Submit Registration →'}
+            {status === 'submitting' ? 'Submitting…' : `Submit & owe $${total} →`}
           </button>
-          <p className="text-center text-[13px] text-ink-soft">
-            Questions? Text {CONTACT_PHONE}.
-          </p>
+          <p className="text-center text-[13px] text-ink-soft">Questions? Text {CONTACT_PHONE}.</p>
         </form>
       </main>
     </div>
@@ -308,7 +385,7 @@ export default function RegisterPage() {
 }
 
 // ── Success screen ─────────────────────────────────────────────────────────────
-function SuccessScreen({ form }) {
+function SuccessScreen({ form, total }) {
   return (
     <div className="min-h-screen bg-cream">
       <FormHeader />
@@ -318,14 +395,14 @@ function SuccessScreen({ form }) {
         <p className="mx-auto mt-3 max-w-[480px] text-[16px] text-ink-soft">
           Thanks, {form.firstName}. We've got {form.childName}'s registration for{' '}
           <strong className="text-ocean-deep">{form.days.join(', ')}</strong>
-          {form.extended === 'Yes' ? ' (with the extended stay until 1pm)' : ''}.
+          {form.extendedDays.length > 0 ? ` (until 1pm on ${form.extendedDays.join(', ')})` : ''}.
         </p>
 
         <div className="mx-auto mt-8 max-w-[480px] rounded-2xl border border-sunset/30 bg-sand-light/60 p-6 text-left">
-          <p className="font-display text-[20px] font-bold text-ocean-deep">One more step — send payment</p>
+          <p className="font-display text-[20px] font-bold text-ocean-deep">One more step — send ${total}</p>
           <p className="mt-2 text-[15px] text-ink-soft">
             Your child's spot is <strong>not confirmed</strong> until payment is received. Please send{' '}
-            <strong>${DAY_RATE} per day</strong>{form.extended === 'Yes' ? ` (+ $${EXTENDED_RATE}/day for the extended stay)` : ''}, with {form.childName}'s name in the note:
+            <strong>${total}</strong> with {form.childName}'s name in the note:
           </p>
           <p className="mt-3 text-[16px] text-ink">• Venmo: <strong>{VENMO_HANDLE}</strong></p>
           <p className="text-[16px] text-ink">• Zelle: <strong>{ZELLE_CONTACT}</strong></p>
@@ -336,9 +413,7 @@ function SuccessScreen({ form }) {
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link to="/register" onClick={() => window.location.reload()} className="btn-secondary">
-            Register another child
-          </Link>
+          <a href="/register" className="btn-secondary">Register another child</a>
           <Link to="/" className="btn-primary">Back to home</Link>
         </div>
       </main>
@@ -389,7 +464,7 @@ function Field({ label, required, error, hint, className = '', children }) {
   )
 }
 
-function Radio({ name, label, value, current, onChange }) {
+function Radio({ label, value, current, onChange }) {
   const active = current === value
   return (
     <button
@@ -423,6 +498,15 @@ function Checkbox({ checked, onChange, label }) {
       </span>
       {label}
     </button>
+  )
+}
+
+function Line({ label, value }) {
+  return (
+    <div className="flex justify-between">
+      <span>{label}</span>
+      <span>${value}</span>
+    </div>
   )
 }
 

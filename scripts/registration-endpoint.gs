@@ -1,54 +1,51 @@
 /**
  * Beach Field Day — registration endpoint (Google Apps Script Web App).
  *
- * What it does when the website form is submitted:
- *   1. Saves the registration as a new row in a Google Sheet (auto-creates headers + a "Paid?" column)
- *   2. Emails YOU an instant "new registration" alert
- *   3. Emails the PARENT a branded confirmation with payment instructions
+ * Handles three jobs:
+ *   • POST  (form submit)            → saves a row, emails owner + parent
+ *   • GET  ?action=counts           → per-date booked counts (for capacity)   [JSONP]
+ *   • GET  ?action=list&key=PASSWORD → all registrations (for the admin page)  [JSONP]
  *
- * ── ONE-TIME SETUP ───────────────────────────────────────────────────────────
- *  1. Go to https://script.google.com  →  New project
- *  2. Delete the sample code, paste THIS whole file in
- *  3. Click Deploy ▸ New deployment
- *       - Type:        Web app
- *       - Description:  Beach Field Day registrations
- *       - Execute as:   Me
- *       - Who has access:  Anyone           ← important (the website calls it)
- *  4. Click Deploy, authorize when asked
- *  5. Copy the "Web app URL" (ends in /exec)
- *  6. Paste that URL into  src/config.js  →  REGISTRATION_ENDPOINT
+ * ── SETUP / REDEPLOY ──────────────────────────────────────────────────────────
+ *  Paste this whole file into your existing Apps Script project (replace all),
+ *  then:  Deploy ▸ Manage deployments ▸ (edit, pencil) ▸ Version: New version ▸ Deploy.
+ *  The /exec URL stays the same, so nothing on the website needs to change.
  *
- *  To find your registrations later: open the Sheet named below from your Google Drive.
- *  (If you change this code later, you must Deploy ▸ Manage deployments ▸ Edit ▸ New version.)
+ *  IMPORTANT: keep "Who has access = Anyone" so the website can reach it.
  */
 
 var OWNER_EMAIL = 'adam.miller.22@gmail.com';
 var SHEET_NAME  = 'Beach Field Day — Registrations';
+var ADMIN_KEY   = 'L0ngport';   // password for the /admin page
+var CAPACITY    = 40;           // max kids per day
 var VENMO       = '@Adam-Miller-23';
 var ZELLE       = '(610) 804-9222';
 var CONTACT     = '(610) 804-9222';
 var DAY_RATE    = 80;
 var EXT_RATE    = 30;
+var DAY_SEP     = ' | ';        // separator used inside the Days / Extended cells
 
-// Column order written to the Sheet.
+// Column order written to the Sheet. [payloadKey, Header]
 var FIELDS = [
-  ['submittedAt', 'Submitted'],
-  ['firstName',   'Parent First'],
-  ['lastName',    'Parent Last'],
-  ['email',       'Email'],
-  ['phone',       'Phone'],
-  ['address',     'Address'],
-  ['childName',   'Child Name'],
-  ['childAge',    'Child Age'],
-  ['emergency',   'Emergency Contact'],
-  ['allergies',   'Allergies / Restrictions'],
-  ['notes',       'Notes'],
-  ['days',        'Days Requested'],
-  ['extended',    'Extended Stay'],
-  ['payment',     'Pay Method'],
-  ['signature',   'Signature'],
+  ['submittedAt',  'Submitted'],
+  ['firstName',    'Parent First'],
+  ['lastName',     'Parent Last'],
+  ['email',        'Email'],
+  ['phone',        'Phone'],
+  ['address',      'Address'],
+  ['childName',    'Child Name'],
+  ['childAge',     'Child Age'],
+  ['emergency',    'Emergency Contact'],
+  ['allergies',    'Allergies / Restrictions'],
+  ['notes',        'Notes'],
+  ['days',         'Days Requested'],
+  ['extendedDays', 'Extended Days'],
+  ['total',        'Total $'],
+  ['payment',      'Pay Method'],
+  ['signature',    'Signature'],
 ];
 
+// ── POST: save + email ───────────────────────────────────────────────────────
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -61,72 +58,118 @@ function doPost(e) {
   }
 }
 
-// Lets you open the /exec URL in a browser to confirm it's live.
-function doGet() {
-  return json_({ ok: true, message: 'Beach Field Day registration endpoint is running.' });
+// ── GET: status / counts / admin list (JSONP when ?callback= is present) ──────
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  var cb = p.callback;
+
+  if (p.action === 'counts') {
+    return reply_(cb, { ok: true, capacity: CAPACITY, counts: countsByDate_() });
+  }
+
+  if (p.action === 'list') {
+    if (p.key !== ADMIN_KEY) {
+      return reply_(cb, { ok: false, error: 'unauthorized' });
+    }
+    return reply_(cb, { ok: true, capacity: CAPACITY, registrations: listAll_() });
+  }
+
+  return reply_(cb, { ok: true, message: 'Beach Field Day registration endpoint is running.' });
 }
 
+// ── Sheet helpers ─────────────────────────────────────────────────────────────
 function saveRow_(data) {
-  var ss = getSpreadsheet_();
-  var sheet = ss.getSheets()[0];
-
+  var sheet = getSpreadsheet_().getSheets()[0];
   if (sheet.getLastRow() === 0) {
     var headers = FIELDS.map(function (f) { return f[1]; });
-    headers.push('Paid?'); // you fill this in manually as payments arrive
+    headers.push('Paid?');
     sheet.appendRow(headers);
     sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
   }
-
-  var row = FIELDS.map(function (f) { return data[f[0]] || ''; });
-  row.push(''); // empty Paid? cell
+  var row = FIELDS.map(function (f) { return data[f[0]] !== undefined ? data[f[0]] : ''; });
+  row.push('');
   sheet.appendRow(row);
 }
 
+function countsByDate_() {
+  var sheet = getSpreadsheet_().getSheets()[0];
+  var counts = {};
+  if (sheet.getLastRow() < 2) return counts;
+  var values = sheet.getDataRange().getValues();
+  var header = values[0];
+  var daysCol = header.indexOf('Days Requested');
+  if (daysCol < 0) return counts;
+  for (var i = 1; i < values.length; i++) {
+    var cell = String(values[i][daysCol] || '');
+    if (!cell) continue;
+    cell.split(DAY_SEP).forEach(function (d) {
+      d = d.trim();
+      if (d) counts[d] = (counts[d] || 0) + 1;
+    });
+  }
+  return counts;
+}
+
+function listAll_() {
+  var sheet = getSpreadsheet_().getSheets()[0];
+  if (sheet.getLastRow() < 2) return [];
+  var values = sheet.getDataRange().getValues();
+  var header = values[0];
+  var out = [];
+  for (var i = 1; i < values.length; i++) {
+    var obj = {};
+    for (var c = 0; c < header.length; c++) {
+      obj[header[c]] = values[i][c];
+    }
+    out.push(obj);
+  }
+  return out;
+}
+
 function getSpreadsheet_() {
-  // Reuse a single spreadsheet across submissions, tracked in script properties.
   var props = PropertiesService.getScriptProperties();
   var id = props.getProperty('SHEET_ID');
   if (id) {
-    try { return SpreadsheetApp.openById(id); } catch (e) { /* recreate below */ }
+    try { return SpreadsheetApp.openById(id); } catch (e) { /* recreate */ }
   }
   var ss = SpreadsheetApp.create(SHEET_NAME);
   props.setProperty('SHEET_ID', ss.getId());
   return ss;
 }
 
+// ── Email ─────────────────────────────────────────────────────────────────────
 function notifyOwner_(d) {
-  var subject = 'New registration: ' + (d.childName || 'child') + ' — ' + (d.days || '');
+  var subject = 'New registration: ' + (d.childName || 'child') + ' — $' + (d.total || '0');
   var body =
     'New Beach Field Day registration\n\n' +
     'Child: ' + d.childName + ' (age ' + (d.childAge || 'n/a') + ')\n' +
     'Parent: ' + d.firstName + ' ' + d.lastName + '\n' +
     'Email: ' + d.email + '\n' +
     'Phone: ' + d.phone + '\n' +
-    'Days: ' + d.days + '\n' +
-    'Extended stay: ' + d.extended + '\n' +
+    'Days: ' + prettyDays_(d.days) + '\n' +
+    'Extended (1pm): ' + (prettyDays_(d.extendedDays) || 'none') + '\n' +
+    'TOTAL OWED: $' + d.total + '\n' +
     'Pay method: ' + d.payment + '\n' +
     'Emergency: ' + d.emergency + '\n' +
     'Allergies: ' + d.allergies + '\n' +
     'Notes: ' + (d.notes || '—') + '\n\n' +
-    'Watch for payment via ' + d.payment + '.';
+    'Watch for $' + d.total + ' via ' + d.payment + '.';
   MailApp.sendEmail(OWNER_EMAIL, subject, body);
 }
 
 function confirmParent_(d) {
   if (!d.email) return;
-  var extLine = d.extended === 'Yes'
-    ? (' (plus $' + EXT_RATE + '/day for the extended stay until 1pm)')
-    : '';
   var subject = "You're registered for Beach Field Day! 🏖️";
   var body =
     'Hi ' + d.firstName + ',\n\n' +
-    "Thanks for registering " + d.childName + " for Beach Field Day!\n\n" +
-    'Days: ' + d.days + '\n' +
-    (d.extended === 'Yes' ? 'Extended stay: until 1pm\n' : '') +
+    'Thanks for registering ' + d.childName + ' for Beach Field Day!\n\n' +
+    'Days: ' + prettyDays_(d.days) + '\n' +
+    (d.extendedDays ? 'Extended until 1pm on: ' + prettyDays_(d.extendedDays) + '\n' : '') +
     '\n' +
     '⚠️ IMPORTANT — your child\'s spot is NOT confirmed until payment is received.\n\n' +
-    'Please send $' + DAY_RATE + ' per child, per day' + extLine + ', with ' + d.childName + "'s name in the note:\n" +
+    'AMOUNT TO SEND: $' + d.total + '\n' +
+    'Please send it with ' + d.childName + "'s name in the note:\n" +
     '  • Venmo: ' + VENMO + '\n' +
     '  • Zelle: ' + ZELLE + '\n\n' +
     'Once we receive payment, we\'ll text you to confirm the spot.\n\n' +
@@ -135,14 +178,28 @@ function confirmParent_(d) {
     '  • Labeled water bottle, hat, and towel\n' +
     '  • Athletic clothes + closed-toe sneakers (no flip flops)\n' +
     '  • Swimsuit underneath on water-game days\n' +
-    (d.extended === 'Yes' ? '  • A small packed lunch on your extended-stay days\n' : '') +
+    (d.extendedDays ? '  • A small packed lunch on your extended-stay days\n' : '') +
     '\n' +
     'WHERE: the basketball courts at 35th & Atlantic, Longport, NJ\n' +
-    'WHEN: drop-off 9am, pick-up Noon' + (d.extended === 'Yes' ? ' (1pm on extended days)' : '') + '\n\n' +
+    'WHEN: drop-off 9am, pick-up Noon (1pm on extended days)\n\n' +
     'Questions? Just reply to this email or text ' + CONTACT + '.\n\n' +
     'See you on the sand!\n' +
     'Beach Field Day';
   MailApp.sendEmail(d.email, subject, body);
+}
+
+function prettyDays_(s) {
+  return String(s || '').split(DAY_SEP).map(function (x) { return x.trim(); }).filter(String).join(', ');
+}
+
+// ── Output helpers ────────────────────────────────────────────────────────────
+function reply_(callback, obj) {
+  if (callback) {
+    return ContentService
+      .createTextOutput(callback + '(' + JSON.stringify(obj) + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return json_(obj);
 }
 
 function json_(obj) {
