@@ -8,12 +8,10 @@ export default function Hero() {
         background: 'linear-gradient(180deg, #FFE9C7 0%, #FAD9A8 35%, #F5C390 65%, #E87A4A 100%)',
       }}
     >
-      <div
-        className="absolute -right-20 top-20 h-[360px] w-[360px] animate-float rounded-full opacity-90"
-        style={{
-          background:
-            'radial-gradient(circle, #FFF4D6 0%, #FFD894 40%, #F5A65C 70%, transparent 75%)',
-        }}
+      <img
+        src="/logo.png"
+        alt="Beach Field Day logo"
+        className="absolute right-4 top-24 h-[300px] w-[300px] animate-float object-contain drop-shadow-xl sm:right-12 sm:h-[360px] sm:w-[360px]"
       />
       <div
         className="absolute bottom-0 left-0 h-[120px] w-full"
