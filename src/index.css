@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: #1F2D38;
+    background: #FFF8EC;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .container-x {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-ocean-deep px-8 py-4 font-bold text-cream text-base transition-all hover:bg-ocean hover:-translate-y-0.5;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 12px 24px rgba(26, 74, 102, 0.25);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-full px-8 py-4 font-bold text-ocean-deep text-base transition-all;
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid #1A4A66;
+  }
+  .btn-secondary:hover {
+    background: #1A4A66;
+    color: #FFF8EC;
+  }
+
+  .section-eyebrow {
+    @apply inline-block text-[13px] font-bold uppercase tracking-[0.1em] text-sunset-deep mb-4;
+  }
+  .section-title {
+    @apply text-[clamp(36px,5vw,56px)] text-ocean-deep mb-6 max-w-3xl;
+  }
+  .section-title em {
+    font-style: italic;
+    font-weight: 600;
+    color: #C95A2E;
+  }
+  .section-lede {
+    @apply text-[19px] text-ink-soft max-w-2xl mb-14 leading-relaxed;
+  }
+}
+
+/* Hero wavy sand strip */
+.sand-strip {
+  clip-path: polygon(
+    0 40%, 8% 30%, 18% 45%, 30% 25%, 42% 50%,
+    55% 30%, 68% 45%, 80% 25%, 92% 50%, 100% 35%,
+    100% 100%, 0 100%
+  );
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* FAQ accordion marker */
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q::marker { content: ''; }

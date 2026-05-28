@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Beach Field Day | Margate & Longport Kids' Beach Camp</title>
+<meta name="description" content="A drop-off beach camp for kids ages 4-9 in Margate & Longport. Run by certified PE teachers. Sports, games, arts & crafts, water games. Saturdays & Sundays, 9am-Noon. $80/day." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;0,9..144,900;1,9..144,600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --sand: #F5E6C8;
+    --sand-light: #FAF0DA;
+    --sand-deep: #E8D2A0;
+    --ocean: #2B6B8C;
+    --ocean-deep: #1A4A66;
+    --ocean-light: #6FA8C2;
+    --sunset: #E87A4A;
+    --sunset-deep: #C95A2E;
+    --coral: #F4A776;
+    --cream: #FFF8EC;
+    --ink: #1F2D38;
+    --ink-soft: #4A5763;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(255, 248, 236, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(31, 45, 56, 0.08);
+  }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--ocean-deep);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-sun {
+    width: 28px;
+    height: 28px;
+    background: var(--sunset);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--sand-light), 0 0 0 4px var(--sunset);
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .nav-links a { color: var(--ink-soft); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ocean-deep); }
+  .nav-cta {
+    background: var(--sunset);
+    color: var(--cream);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--sunset-deep); transform: translateY(-1px); }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 140px 24px 80px;
+    background: linear-gradient(180deg, #FFE9C7 0%, #FAD9A8 35%, #F5C390 65%, #E87A4A 100%);
+    overflow: hidden;
+  }
+  .hero-sun {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, #FFF4D6 0%, #FFD894 40%, #F5A65C 70%, transparent 75%);
+    border-radius: 50%;
+    top: 80px;
+    right: -80px;
+    opacity: 0.9;
+    animation: float 8s ease-in-out infinite;
+  }
+  .hero-waves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background:
+      radial-gradient(ellipse at 20% 100%, rgba(43, 107, 140, 0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 100%, rgba(26, 74, 102, 0.2) 0%, transparent 50%);
+  }
+  .sand-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: var(--sand);
+    clip-path: polygon(0 40%, 8% 30%, 18% 45%, 30% 25%, 42% 50%, 55% 30%, 68% 45%, 80% 25%, 92% 50%, 100% 35%, 100% 100%, 0 100%);
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    color: var(--ocean-deep);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    border: 1px solid rgba(43, 107, 140, 0.15);
+  }
+  .hero h1 {
+    font-size: clamp(48px, 9vw, 112px);
+    color: var(--ocean-deep);
+    max-width: 900px;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--sunset-deep);
+    font-weight: 600;
+  }
+  .hero-sub {
+    font-size: clamp(18px, 2.2vw, 22px);
+    color: var(--ink);
+    max-width: 580px;
+    margin-bottom: 36px;
+    font-weight: 500;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+  .btn-primary {
+    background: var(--ocean-deep);
+    color: var(--cream);
+    padding: 16px 32px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--ocean); transform: translateY(-2px); box-shadow: 0 12px 24px rgba(26, 74, 102, 0.25); }
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    color: var(--ocean-deep);
+    padding: 16px 32px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 16px;
+    border: 1.5px solid var(--ocean-deep);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--ocean-deep); color: var(--cream); }
+
+  .hero-info-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid rgba(31, 45, 56, 0.15);
+    max-width: 700px;
+  }
+  .hero-info-item .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .hero-info-item .value {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ===== SECTION BASE ===== */
+  section {
+    padding: 96px 24px;
+    position: relative;
+  }
+  .section-eyebrow {
+    display: inline-block;
+    color: var(--sunset-deep);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--ocean-deep);
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+  .section-title em {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--sunset-deep);
+  }
+  .section-lede {
+    font-size: 19px;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin-bottom: 56px;
+    line-height: 1.6;
+  }
+
+  /* ===== ABOUT ===== */
+  .about {
+    background: var(--cream);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+  .about-card {
+    background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean) 100%);
+    color: var(--cream);
+    padding: 48px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--sunset) 0%, transparent 70%);
+    opacity: 0.3;
+  }
+  .about-card h3 {
+    font-size: 28px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .about-card p {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .about-stat .num {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--coral);
+    line-height: 1;
+  }
+  .about-stat .lbl {
+    font-size: 13px;
+    opacity: 0.85;
+    margin-top: 4px;
+  }
+
+  /* ===== ACTIVITIES ===== */
+  .activities {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--sand-light) 100%);
+  }
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .activity-card {
+    background: var(--cream);
+    padding: 28px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(43, 107, 140, 0.1);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .activity-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--sunset);
+    box-shadow: 0 16px 32px rgba(232, 122, 74, 0.15);
+  }
+  .activity-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--sand);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 18px;
+  }
+  .activity-card h4 {
+    font-size: 20px;
+    color: var(--ocean-deep);
+    margin-bottom: 8px;
+  }
+  .activity-card p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* ===== SCHEDULE / PRICING ===== */
+  .pricing {
+    background: var(--cream);
+  }
+  .pricing-card {
+    background: linear-gradient(135deg, var(--sand-light) 0%, var(--sand) 100%);
+    padding: 56px;
+    border-radius: 32px;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    border: 1.5px solid var(--sand-deep);
+  }
+  .pricing-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: 160px;
+    height: 160px;
+    background: var(--sunset);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+  .pricing-card::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: var(--ocean);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .price {
+    font-family: 'Fraunces', serif;
+    font-size: 88px;
+    font-weight: 900;
+    color: var(--ocean-deep);
+    line-height: 1;
+    margin: 16px 0 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .price span { font-size: 32px; color: var(--ink-soft); font-weight: 600; }
+  .price-label {
+    font-size: 18px;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .schedule-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 32px 0;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 600px) {
+    .schedule-info { grid-template-columns: 1fr; }
+    .pricing-card { padding: 40px 24px; }
+  }
+  .schedule-item {
+    background: rgba(255, 248, 236, 0.7);
+    padding: 16px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(43, 107, 140, 0.1);
+  }
+  .schedule-item .top {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sunset-deep);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .schedule-item .bottom {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ocean-deep);
+  }
+
+  /* ===== PARENT INFO ===== */
+  .parent-info {
+    background: linear-gradient(180deg, var(--sand-light) 0%, var(--cream) 100%);
+  }
+  .info-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 800px) {
+    .info-columns { grid-template-columns: 1fr; }
+  }
+  .info-block {
+    background: var(--cream);
+    padding: 32px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(43, 107, 140, 0.1);
+  }
+  .info-block h4 {
+    font-size: 22px;
+    color: var(--ocean-deep);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .info-block ul {
+    list-style: none;
+    padding: 0;
+  }
+  .info-block ul li {
+    padding: 10px 0 10px 28px;
+    position: relative;
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(31, 45, 56, 0.06);
+  }
+  .info-block ul li:last-child { border-bottom: none; }
+  .info-block ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 14px;
+    height: 14px;
+    background: var(--sunset);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px var(--sand-light);
+  }
+
+  /* ===== FAQ ===== */
+  .faq {
+    background: var(--cream);
+  }
+  .faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .faq-item {
+    border-bottom: 1.5px solid rgba(43, 107, 140, 0.12);
+    padding: 24px 0;
+  }
+  .faq-q {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    list-style: none;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: '+';
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--sunset);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  details[open] .faq-q::after { transform: rotate(45deg); }
+  .faq-a {
+    margin-top: 12px;
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ===== FINAL CTA ===== */
+  .final-cta {
+    background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean) 60%, var(--sunset) 130%);
+    color: var(--cream);
+    text-align: center;
+    padding: 96px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    right: 10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--coral) 0%, transparent 70%);
+    opacity: 0.4;
+  }
+  .final-cta h2 {
+    font-size: clamp(36px, 6vw, 64px);
+    margin-bottom: 16px;
+    color: var(--cream);
+    position: relative;
+    z-index: 1;
+  }
+  .final-cta h2 em { color: var(--coral); font-style: italic; font-weight: 600; }
+  .final-cta p {
+    font-size: 19px;
+    opacity: 0.9;
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 1;
+  }
+  .final-cta .btn-primary {
+    background: var(--cream);
+    color: var(--ocean-deep);
+    font-size: 18px;
+    padding: 20px 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .final-cta .btn-primary:hover { background: var(--sand-light); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--ocean-deep);
+    color: var(--sand-light);
+    padding: 48px 24px 32px;
+    text-align: center;
+  }
+  footer .container { padding: 0; }
+  .footer-logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .footer-tag {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 24px;
+  }
+  .footer-contact {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+  .footer-contact a {
+    color: var(--sand-light);
+    transition: color 0.2s;
+  }
+  .footer-contact a:hover { color: var(--coral); }
+  .footer-copy {
+    font-size: 12px;
+    opacity: 0.5;
+    padding-top: 24px;
+    border-top: 1px solid rgba(245, 230, 200, 0.15);
+  }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-sun"></span>
+      Beach Field Day
+    </a>
+    <div class="nav-links">
+      <a href="#activities">Activities</a>
+      <a href="#pricing">Schedule</a>
+      <a href="#info">Parent Info</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#register" class="nav-cta">Register</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-sun"></div>
+  <div class="hero-waves"></div>
+  <div class="sand-strip"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">★ Margate & Longport, NJ ★ Summer 2026</span>
+    <h1>The best mornings of your kid's <em>summer</em>.</h1>
+    <p class="hero-sub">A drop-off beach camp for ages 4–9, run by two certified PE teachers. Sports, games, arts &amp; crafts, water games, and full-on field-day energy — all on the sand.</p>
+    <div class="hero-ctas">
+      <a href="#register" class="btn-primary">Register Your Child →</a>
+      <a href="#activities" class="btn-secondary">See What We Do</a>
+    </div>
+    <div class="hero-info-row">
+      <div class="hero-info-item">
+        <div class="label">When</div>
+        <div class="value">Sat &amp; Sun · 9–Noon</div>
+      </div>
+      <div class="hero-info-item">
+        <div class="label">Ages</div>
+        <div class="value">4 to 9</div>
+      </div>
+      <div class="hero-info-item">
+        <div class="label">Price</div>
+        <div class="value">$80 / day</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal">
+        <span class="section-eyebrow">Who's running it</span>
+        <h2 class="section-title">Two PE teachers. One <em>perfect</em> beach morning.</h2>
+        <p class="section-lede">Beach Field Day is run by certified Health &amp; Physical Education teachers with years of experience working with elementary-age kids. We bring real lesson-planning, real safety standards, and a real love for what we do — to the beach every weekend.</p>
+        <p style="font-size: 17px; color: var(--ink-soft); line-height: 1.7;">No screens. No standing around. No ocean. Just three hours of activities designed to wear your kid out in the best possible way — so you can have your Saturday morning back.</p>
+      </div>
+      <div class="about-card reveal">
+        <h3>Why parents trust us</h3>
+        <p>We're the same people teaching your kids in school all year. Drop-off means drop-off — you don't need to stay. We've got it from here.</p>
+        <div class="about-stats">
+          <div class="about-stat">
+            <div class="num">2</div>
+            <div class="lbl">Certified PE teachers on site</div>
+          </div>
+          <div class="about-stat">
+            <div class="num">4–9</div>
+            <div class="lbl">Age range, all welcome</div>
+          </div>
+          <div class="about-stat">
+            <div class="num">3 hrs</div>
+            <div class="lbl">Of pure activity</div>
+          </div>
+          <div class="about-stat">
+            <div class="num">0</div>
+            <div class="lbl">Trips in the ocean. Ever.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="activities" id="activities">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-eyebrow">What they'll do</span>
+      <h2 class="section-title">Every morning is <em>different</em>. Every kid leaves smiling.</h2>
+      <p class="section-lede">We mix it up every session so kids never get bored — and so siblings or repeat campers always get something new.</p>
+    </div>
+    <div class="activities-grid">
+      <div class="activity-card reveal">
+        <div class="activity-icon">🏐</div>
+        <h4>Beach Sports</h4>
+        <p>Volleyball, soccer, wiffle ball, kickball, capture the flag, ultimate — all sand-friendly versions.</p>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-icon">🏆</div>
+        <h4>Field Day Games</h4>
+        <p>Relay races, tug-of-war, sack races, water balloon toss, and the classics that never get old.</p>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-icon">⏱️</div>
+        <h4>Minute to Win It</h4>
+        <p>Fast, silly, do-it-in-60-seconds challenges that get everyone laughing and competing.</p>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-icon">🎨</div>
+        <h4>Arts &amp; Crafts</h4>
+        <p>Beach-themed projects, shell art, tie-dye, painting — a creative break between active games.</p>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-icon">🏃</div>
+        <h4>Obstacle Courses</h4>
+        <p>Custom-built sand courses that test agility, balance, and teamwork. Every day's a new layout.</p>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-icon">💦</div>
+        <h4>Water Games</h4>
+        <p>Sprinklers, water balloons, soaker games — cooling off without ever going in the ocean.</p>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-icon">🏀</div>
+        <h4>Basketball</h4>
+        <p>We have court access for shooting games, knockout, and pickup hoops when the heat dictates.</p>
+      </div>
+      <div class="activity-card reveal">
+        <div class="activity-icon">🍎</div>
+        <h4>Daily Snack</h4>
+        <p>A healthy snack break midway through — fuel for the next round of activities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div style="text-align: center;" class="reveal">
+      <span class="section-eyebrow">Schedule &amp; pricing</span>
+      <h2 class="section-title" style="margin-left: auto; margin-right: auto;">Simple. <em>Flexible.</em> No commitment.</h2>
+      <p class="section-lede" style="margin-left: auto; margin-right: auto;">Sign up for one day or every weekend. We start with Saturdays &amp; Sundays — weekday sessions are coming as the summer ramps up.</p>
+    </div>
+    <div class="pricing-card reveal">
+      <span class="section-eyebrow">Per child, per day</span>
+      <div class="price">$80<span></span></div>
+      <div class="price-label">No bundles. No memberships. Just show up.</div>
+      <div class="schedule-info">
+        <div class="schedule-item">
+          <div class="top">Days</div>
+          <div class="bottom">Sat &amp; Sun</div>
+        </div>
+        <div class="schedule-item">
+          <div class="top">Time</div>
+          <div class="bottom">9am – Noon</div>
+        </div>
+        <div class="schedule-item">
+          <div class="top">Location</div>
+          <div class="bottom">Margate Beach</div>
+        </div>
+      </div>
+      <a href="#register" class="btn-primary" style="background: var(--ocean-deep);">Register Now →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PARENT INFO -->
+<section class="parent-info" id="info">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-eyebrow">Before you drop off</span>
+      <h2 class="section-title">Everything parents need to <em>know</em>.</h2>
+      <p class="section-lede">Read these carefully before your child's first session. A little prep at home makes for a great morning at the beach.</p>
+    </div>
+    <div class="info-columns">
+      <div class="info-block reveal">
+        <h4>✓ What to do at home</h4>
+        <ul>
+          <li>Apply sunscreen before drop-off — we cannot apply sunscreen on arrival</li>
+          <li>Have your child use the bathroom before leaving the house</li>
+          <li>Dress in athletic clothing &amp; closed-toe sneakers (no flip flops)</li>
+          <li>Pack a swimsuit underneath for water-game days</li>
+          <li>Bring a labeled water bottle — every child, every day</li>
+          <li>Pack a hat and a towel</li>
+        </ul>
+      </div>
+      <div class="info-block reveal">
+        <h4>✓ Drop-off &amp; pick-up</h4>
+        <ul>
+          <li>This is a drop-off program. Parents do not need to stay on site</li>
+          <li>Arrive on time so sessions can begin promptly at 9am</li>
+          <li>Pick-up is at Noon. Late pick-up fee applies after 12:15pm</li>
+          <li>Only authorized adults (listed at registration) may pick up your child</li>
+          <li>Running late or can't make it? Text us right away</li>
+        </ul>
+      </div>
+      <div class="info-block reveal">
+        <h4>✓ Weather policy</h4>
+        <ul>
+          <li>All sessions are weather permitting</li>
+          <li>In case of inclement weather, parents receive a text at least 2 hours before session</li>
+          <li>Any missed session due to weather will be rescheduled</li>
+          <li>Light rain or overcast days = we still play. We'll let you know if it's a no-go</li>
+        </ul>
+      </div>
+      <div class="info-block reveal">
+        <h4>✓ Safety promises</h4>
+        <ul>
+          <li>We never go in the ocean. Ever. All activities stay on the sand or court</li>
+          <li>Both lead staff are certified Health &amp; PE teachers, CPR &amp; First Aid certified</li>
+          <li>Allergy and medical info is collected at registration and reviewed daily</li>
+          <li>Sign-in / sign-out procedure with ID check for every drop-off</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <span class="section-eyebrow">FAQ</span>
+      <h2 class="section-title" style="margin-left: auto; margin-right: auto;">Common <em>questions</em>.</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary class="faq-q">Do you go in the ocean?</summary>
+        <p class="faq-a">No. Beach Field Day is a sand-and-court program only. We never take children into the ocean under any circumstances. All water games use sprinklers, water balloons, and similar gear — never the surf.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary class="faq-q">What if it rains?</summary>
+        <p class="faq-a">If weather forces cancellation, parents will receive a text at least 2 hours before the session. Any missed day is rescheduled at no extra cost.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary class="faq-q">Where exactly do you meet?</summary>
+        <p class="faq-a">A specific beach block and meet-up spot is sent to all registered families before each session. We're based in the Margate/Longport area.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary class="faq-q">Can my 4-year-old handle drop-off?</summary>
+        <p class="faq-a">Most can, especially with older siblings or friends. If your child has never done a drop-off program before, talk to us — we'll help you make the call. With two certified PE teachers on staff, we're equipped for the full age range.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary class="faq-q">What does my child need to bring?</summary>
+        <p class="faq-a">A labeled water bottle, hat, towel, sunscreen (applied at home), closed-toe sneakers, and a swimsuit on water-game days. Skip the toys, electronics, and valuables.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary class="faq-q">Is lunch provided?</summary>
+        <p class="faq-a">No — we end at noon. A daily snack is provided mid-session. Kids head home in time for lunch with their family.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary class="faq-q">How do I pay?</summary>
+        <p class="faq-a">Registration is done through our online form. Payment is accepted via Venmo or Zelle, with details sent after registration is confirmed.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary class="faq-q">Are weekday sessions coming?</summary>
+        <p class="faq-a">Yes — we're starting with Saturdays &amp; Sundays and plan to add Monday–Friday sessions later in the summer based on demand.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta" id="register">
+  <h2>Ready for the <em>best morning</em><br/>of the weekend?</h2>
+  <p>Click below to register. Spots are limited per session.</p>
+  <a href="#" class="btn-primary" onclick="alert('Replace this link with your Google Form URL.'); return false;">Register on Google Form →</a>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-logo">Beach Field Day</div>
+    <div class="footer-tag">Margate &amp; Longport, NJ · Saturdays &amp; Sundays · Summer 2026</div>
+    <div class="footer-contact">
+      <a href="mailto:hello@beachfieldday.com">hello@beachfieldday.com</a>
+      <span style="opacity: 0.4;">·</span>
+      <a href="tel:6108049222">(610) 804-9222</a>
+    </div>
+    <div class="footer-copy">© 2026 Beach Field Day. All rights reserved. Run with love by two PE teachers.</div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
