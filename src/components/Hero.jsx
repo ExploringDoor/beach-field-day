@@ -8,10 +8,12 @@ export default function Hero() {
         background: 'linear-gradient(180deg, #FFE9C7 0%, #FAD9A8 35%, #F5C390 65%, #E87A4A 100%)',
       }}
     >
+      {/* Desktop: floating badge in the top-right (room to the side of the headline) */}
       <img
         src="/logo.png"
-        alt="Beach Field Day logo"
-        className="absolute right-4 top-24 h-[300px] w-[300px] animate-float object-contain drop-shadow-xl sm:right-12 sm:h-[360px] sm:w-[360px]"
+        alt=""
+        aria-hidden="true"
+        className="absolute right-8 top-24 hidden h-[340px] w-[340px] animate-float object-contain drop-shadow-xl lg:block"
       />
       <div
         className="absolute bottom-0 left-0 h-[120px] w-full"
@@ -23,6 +25,12 @@ export default function Hero() {
       <div className="sand-strip absolute bottom-0 left-0 h-[50px] w-full bg-sand" />
 
       <div className="relative z-10 mx-auto max-w-[1200px]">
+        {/* Mobile / tablet: logo sits in-flow above the headline (no overlap) */}
+        <img
+          src="/logo.png"
+          alt="Beach Field Day logo"
+          className="mx-auto mb-6 h-40 w-40 animate-float object-contain drop-shadow-xl sm:h-48 sm:w-48 lg:hidden"
+        />
         <span
           className="mb-6 inline-block rounded-full border border-ocean/15 px-4 py-2 text-[13px] font-bold uppercase tracking-[0.06em] text-ocean-deep"
           style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(8px)' }}
