@@ -36,7 +36,7 @@ export default function Hero() {
           A drop-off beach camp for ages 4–9, run by two certified PE teachers. Sports, games, arts &amp; crafts, water games, and full-on field-day energy — on the sand, on the basketball courts, and on the field.
         </p>
         <div className="mb-12 flex flex-wrap gap-4">
-          <a href={REGISTER_URL} className="btn-primary">Register Your Child →</a>
+          <a href={REGISTER_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">Register Your Child →</a>
           <a href="#activities" className="btn-secondary">See What We Do</a>
         </div>
         <div className="flex max-w-[700px] flex-wrap gap-8 border-t border-ink/15 pt-8">

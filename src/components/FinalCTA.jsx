@@ -23,13 +23,9 @@ export default function FinalCTA() {
       </p>
       <a
         href={REGISTER_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         className="relative z-10 inline-flex items-center gap-2 rounded-full bg-cream px-10 py-5 text-[18px] font-bold text-ocean-deep transition-all hover:-translate-y-0.5 hover:bg-sand-light"
-        onClick={(e) => {
-          if (REGISTER_URL === '#register') {
-            e.preventDefault()
-            alert('Replace REGISTER_URL in src/App.jsx with your Google Form link.')
-          }
-        }}
       >
         Register on Google Form →
       </a>

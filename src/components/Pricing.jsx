@@ -50,7 +50,7 @@ export default function Pricing() {
               Need a longer morning? Add an extra hour at registration and we'll keep the games going until 1pm.
             </p>
           </div>
-          <a href={REGISTER_URL} className="btn-primary relative z-10">Register Now →</a>
+          <a href={REGISTER_URL} target="_blank" rel="noopener noreferrer" className="btn-primary relative z-10">Register Now →</a>
         </div>
       </div>
     </section>

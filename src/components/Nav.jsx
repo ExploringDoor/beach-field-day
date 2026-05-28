@@ -28,6 +28,8 @@ export default function Nav() {
         </div>
         <a
           href={REGISTER_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="rounded-full bg-sunset px-5 py-2.5 text-sm font-bold text-cream transition-all hover:-translate-y-px hover:bg-sunset-deep"
         >
           Register

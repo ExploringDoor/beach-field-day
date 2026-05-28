@@ -10,7 +10,7 @@ import FinalCTA from './components/FinalCTA.jsx'
 import Footer from './components/Footer.jsx'
 import { useScrollReveal } from './hooks/useScrollReveal.js'
 
-export const REGISTER_URL = '#register'
+export const REGISTER_URL = 'https://forms.gle/444r2yJTPbciPXXk7'
 
 export default function App() {
   useScrollReveal()
