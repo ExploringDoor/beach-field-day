@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: 'Is lunch provided?',
-    a: 'No — standard sessions end at noon, and a daily snack is provided mid-session in the gazebo. If you add the 1pm option (+$30/day), pack a small lunch so your child has something to eat during the extra hour.',
+    a: 'No — standard sessions end at noon, and a daily snack is provided mid-session in the gazebo. If you add the 1pm option (+$35/day), pack a small lunch so your child has something to eat during the extra hour.',
   },
   {
     q: 'How do I pay?',

@@ -13,8 +13,8 @@ export const CONTACT_PHONE = '(610) 804-9222'
 export const CONTACT_EMAIL = 'adam.miller.22@gmail.com'
 
 // Pricing
-export const DAY_RATE = 80
-export const EXTENDED_RATE = 30
+export const DAY_RATE = 100
+export const EXTENDED_RATE = 35
 
 // Max kids per day. When a date reaches this, it shows as "Full".
 export const CAPACITY = 40

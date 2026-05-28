@@ -28,7 +28,7 @@ export default function Pricing() {
           />
           <span className="section-eyebrow">Per child, per day</span>
           <div className="relative z-10 my-2 font-display text-[88px] font-black leading-none text-ocean-deep">
-            $80
+            $100
           </div>
           <div className="relative z-10 mb-8 text-[18px] text-ink-soft">
             No bundles. No memberships. Just show up.
@@ -45,7 +45,7 @@ export default function Pricing() {
               Optional add-on
             </div>
             <div className="font-display text-[18px] font-bold text-ocean-deep">
-              Stay until 1pm — <span className="text-sunset-deep">+$30/day</span>
+              Stay until 1pm — <span className="text-sunset-deep">+$35/day</span>
             </div>
             <p className="mt-1 text-[14px] text-ink-soft">
               Need a longer morning? Add an extra hour at registration and we'll keep the games going until 1pm.

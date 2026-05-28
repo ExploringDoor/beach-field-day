@@ -21,8 +21,8 @@ var CAPACITY    = 40;           // max kids per day
 var VENMO       = '@Adam-Miller-23';
 var ZELLE       = '(610) 804-9222';
 var CONTACT     = '(610) 804-9222';
-var DAY_RATE    = 80;
-var EXT_RATE    = 30;
+var DAY_RATE    = 100;
+var EXT_RATE    = 35;
 var DAY_SEP     = ' | ';        // separator used inside the Days / Extended cells
 
 // Column order written to the Sheet. [payloadKey, Header]
