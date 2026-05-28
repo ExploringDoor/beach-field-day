@@ -9,7 +9,7 @@ const FAQS = [
   },
   {
     q: 'Where exactly do you meet?',
-    a: 'We meet at the basketball-court / gazebo area on the beachfront. A specific block and meet-up spot is sent to all registered families before each session.',
+    a: 'We meet at the Longport basketball courts. From there we use the courts, the adjacent grass field, the gazebo for shade, and the beach itself. Specific meet-up details are sent to all registered families before each session.',
   },
   {
     q: 'Is there shade and a bathroom on site?',
@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: 'Is lunch provided?',
-    a: 'No — we end at noon. A daily snack is provided mid-session in the gazebo. Kids head home in time for lunch with their family.',
+    a: 'No — standard sessions end at noon, and a daily snack is provided mid-session in the gazebo. If you add the 1pm option (+$30/day), pack a small lunch so your child has something to eat during the extra hour.',
   },
   {
     q: 'How do I pay?',

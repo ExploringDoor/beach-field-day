@@ -35,7 +35,20 @@ export default function Pricing() {
           <div className="relative z-10 my-8 grid gap-4 sm:grid-cols-3">
             <Chip top="Days" bottom="Sat & Sun" />
             <Chip top="Time" bottom="9am – Noon" />
-            <Chip top="Location" bottom="Margate Beach" />
+            <Chip top="Location" bottom="Longport, NJ" />
+          </div>
+          <div
+            className="relative z-10 mb-8 rounded-2xl border border-sunset/30 bg-cream/70 p-5 text-left"
+          >
+            <div className="mb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-sunset-deep">
+              Optional add-on
+            </div>
+            <div className="font-display text-[18px] font-bold text-ocean-deep">
+              Stay until 1pm — <span className="text-sunset-deep">+$30/day</span>
+            </div>
+            <p className="mt-1 text-[14px] text-ink-soft">
+              Need a longer morning? Add an extra hour at registration and we'll keep the games going until 1pm.
+            </p>
           </div>
           <a href={REGISTER_URL} className="btn-primary relative z-10">Register Now →</a>
         </div>

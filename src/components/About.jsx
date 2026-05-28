@@ -12,7 +12,7 @@ export default function About() {
               Beach Field Day is run by certified Health &amp; Physical Education teachers with years of experience working with elementary-age kids. We bring real lesson-planning, real safety standards, and a real love for what we do — to the beach every weekend.
             </p>
             <p className="text-[17px] leading-relaxed text-ink-soft">
-              No screens. No standing around. No ocean. Just three hours of activities designed to wear your kid out in the best possible way — so you can have your Saturday morning back.
+              No screens. No standing around. No ocean. Just three hours of activities designed to wear your kid out in the best possible way — so you can have your Saturday and Sunday mornings back.
             </p>
           </div>
           <div

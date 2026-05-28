@@ -15,7 +15,7 @@ const BLOCKS = [
     items: [
       'This is a drop-off program. Parents do not need to stay on site',
       'Arrive on time so sessions can begin promptly at 9am',
-      'Pick-up is at Noon. Late pick-up fee applies after 12:15pm',
+      'Pick-up is at Noon (or 1pm if you added the extended-stay option). Late pick-up fee applies 15 minutes after your scheduled pick-up time',
       'Only authorized adults (listed at registration) may pick up your child',
       'Running late or can\'t make it? Text us right away',
     ],

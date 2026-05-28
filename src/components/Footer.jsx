@@ -6,7 +6,7 @@ export default function Footer() {
           Beach Field Day
         </div>
         <div className="mb-6 text-sm opacity-70">
-          Margate &amp; Longport, NJ · Saturdays &amp; Sundays · Summer 2026
+          Longport, NJ · Saturdays &amp; Sundays · Summer 2026
         </div>
         <div className="mb-8 flex flex-wrap justify-center gap-6 text-[15px]">
           <a href="mailto:hello@beachfieldday.com" className="text-sand-light transition-colors hover:text-coral">
