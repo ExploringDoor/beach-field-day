@@ -2,6 +2,11 @@ export default function Footer() {
   return (
     <footer className="bg-ocean-deep px-6 pb-8 pt-12 text-center text-sand-light">
       <div className="mx-auto max-w-[1200px]">
+        <img
+          src="/logo.png"
+          alt="Beach Field Day logo"
+          className="mx-auto mb-4 h-28 w-28 object-contain"
+        />
         <div className="mb-3 font-display text-2xl font-black text-cream">
           Beach Field Day
         </div>

@@ -11,10 +11,11 @@ export default function Nav() {
       }}
     >
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4">
-        <a href="#" className="flex items-center gap-2 font-display text-[22px] font-black tracking-tight text-ocean-deep">
-          <span
-            className="h-7 w-7 rounded-full bg-sunset"
-            style={{ boxShadow: '0 0 0 3px #FAF0DA, 0 0 0 4px #E87A4A' }}
+        <a href="#" className="flex items-center gap-2.5 font-display text-[22px] font-black tracking-tight text-ocean-deep">
+          <img
+            src="/logo.png"
+            alt="Beach Field Day logo"
+            className="h-11 w-11 object-contain"
           />
           Beach Field Day
         </a>
