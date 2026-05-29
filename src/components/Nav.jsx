@@ -16,7 +16,7 @@ export default function Nav() {
           <img
             src="/logo.png"
             alt="Beach Field Day logo"
-            className="h-11 w-11 object-contain"
+            className="h-11 w-11 rounded-full object-cover"
           />
           Beach Field Day
         </a>
