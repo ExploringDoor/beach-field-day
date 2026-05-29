@@ -19,7 +19,7 @@
 
 var OWNER_EMAIL = 'adam.miller.22@gmail.com';
 var SHEET_NAME  = 'Field Day Adventures - Registrations';
-var ADMIN_KEY   = 'L0ngport';
+var ADMIN_KEY   = 'fielddaycamp';
 var CAPACITY    = 40;
 var VENMO       = '@Adam-Miller-23';
 var ZELLE       = '(610) 804-9222';
@@ -120,7 +120,7 @@ function countsByDate_() {
 
 // -- ADMIN SERVER FUNCTIONS (called from the HTML via google.script.run) --------
 function adminGetData(key) {
-  if (key !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
+  if (String(key).trim() !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
   var sheet = getSpreadsheet_().getSheets()[0];
   var rows = [];
   if (sheet.getLastRow() >= 2) {
@@ -136,12 +136,12 @@ function adminGetData(key) {
 }
 
 function adminSetPaid(key, id, value) {
-  if (key !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
+  if (String(key).trim() !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
   return writeCell_(id, PAID_HEADER, value);
 }
 
 function adminCancel(key, id) {
-  if (key !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
+  if (String(key).trim() !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
   var sheet = getSpreadsheet_().getSheets()[0];
   var rowNum = findRow_(sheet, id);
   if (rowNum < 0) return { ok: false, error: 'not found' };
@@ -150,7 +150,7 @@ function adminCancel(key, id) {
 }
 
 function adminUpdate(key, id, patch) {
-  if (key !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
+  if (String(key).trim() !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
   var sheet = getSpreadsheet_().getSheets()[0];
   var rowNum = findRow_(sheet, id);
   if (rowNum < 0) return { ok: false, error: 'not found' };
@@ -167,7 +167,7 @@ function adminUpdate(key, id, patch) {
 }
 
 function adminAdd(key, patch) {
-  if (key !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
+  if (String(key).trim() !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
   var data = {};
   FIELDS.forEach(function (f) { data[f[0]] = patch[f[1]] !== undefined ? patch[f[1]] : ''; });
   data.id = Utilities.getUuid();
@@ -338,7 +338,7 @@ function adminHtml_() {
 <div id="login">
   <h1>Field Day Adventures</h1>
   <p class="muted" style="margin-top:4px;">Admin - enter password</p>
-  <input id="pw" type="password" placeholder="Password" autofocus onkeydown="if(event.key==='Enter')login()">
+  <input id="pw" type="password" placeholder="Password" autofocus autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter')login()">
   <button class="btn" style="width:100%" onclick="login()">View registrations</button>
   <div id="loginErr" class="err"></div>
 </div>
