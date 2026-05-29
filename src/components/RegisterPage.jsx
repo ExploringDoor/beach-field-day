@@ -119,6 +119,7 @@ export default function RegisterPage() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Enter a valid email'
     if (!form.phone.trim()) e.phone = 'Required'
     if (!form.childName.trim()) e.childName = 'Required'
+    if (!form.childAge) e.childAge = 'Required'
     if (!form.emergency.trim()) e.emergency = 'Required'
     if (!form.allergies.trim()) e.allergies = 'Required (write "None" if none)'
     if (form.days.length === 0) e.days = 'Pick at least one day'
@@ -168,6 +169,10 @@ export default function RegisterPage() {
     return <SuccessScreen form={form} total={total} />
   }
 
+  // Submit stays disabled until the parent picks a payment method and checks both
+  // the payment acknowledgment and the waiver agreement.
+  const canSubmit = !!form.payment && form.paymentAck && form.waiverAgree
+
   return (
     <div className="min-h-screen bg-cream">
       <FormHeader />
@@ -211,9 +216,9 @@ export default function RegisterPage() {
               <Field label="Child's name" required error={errors.childName}>
                 <input className="bfd-input" value={form.childName} onChange={(e) => set('childName', e.target.value)} />
               </Field>
-              <Field label="Child's age">
+              <Field label="Child's age" required error={errors.childAge}>
                 <select className="bfd-input" value={form.childAge} onChange={(e) => set('childAge', e.target.value)}>
-                  <option value="">Select…</option>
+                  <option value="">Select...</option>
                   {['4', '5', '6', '7', '8', '9'].map((a) => (
                     <option key={a} value={a}>{a}</option>
                   ))}
@@ -325,8 +330,8 @@ export default function RegisterPage() {
             <div data-error={!!errors.payment}>
               <p className="mb-2 text-[14px] font-bold text-ocean-deep">How will you be paying?</p>
               <div className="space-y-2">
-                <Radio name="payment" label={`Venmo (${VENMO_HANDLE})`} value="Venmo" current={form.payment} onChange={(v) => set('payment', v)} />
-                <Radio name="payment" label={`Zelle (${ZELLE_CONTACT})`} value="Zelle" current={form.payment} onChange={(v) => set('payment', v)} />
+                <Radio name="payment" label={`Venmo ${VENMO_HANDLE}`} value="Venmo" current={form.payment} onChange={(v) => set('payment', v)} />
+                <Radio name="payment" label={`Zelle ${ZELLE_CONTACT}`} value="Zelle" current={form.payment} onChange={(v) => set('payment', v)} />
               </div>
               {errors.payment && <ErrorText>{errors.payment}</ErrorText>}
             </div>
@@ -372,11 +377,16 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            disabled={status === 'submitting'}
-            className="btn-primary w-full justify-center !py-5 text-[17px] disabled:opacity-60"
+            disabled={status === 'submitting' || !canSubmit}
+            className="btn-primary w-full justify-center !py-5 text-[17px] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {status === 'submitting' ? 'Submitting…' : `Submit & owe $${total} →`}
+            {status === 'submitting' ? 'Submitting...' : `Submit & owe $${total} →`}
           </button>
+          {!canSubmit && (
+            <p className="text-center text-[13px] font-medium text-sunset-deep">
+              Before you can submit: choose a payment method, check the payment acknowledgment, and agree to the waiver.
+            </p>
+          )}
           <p className="text-center text-[13px] text-ink-soft">Questions? Text {CONTACT_PHONE}.</p>
         </form>
       </main>
