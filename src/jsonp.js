@@ -2,7 +2,7 @@
 // web app (which doesn't send CORS headers, so normal fetch can't read responses).
 let counter = 0
 
-export function jsonp(baseUrl, params = {}, timeoutMs = 15000) {
+export function jsonp(baseUrl, params = {}, timeoutMs = 30000) {
   return new Promise((resolve, reject) => {
     const cb = `__bfd_jsonp_${Date.now()}_${counter++}`
     const script = document.createElement('script')
