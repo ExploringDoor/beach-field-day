@@ -128,7 +128,14 @@ function adminGetData(key) {
     var header = values[0];
     for (var i = 1; i < values.length; i++) {
       var obj = {};
-      for (var c = 0; c < header.length; c++) obj[header[c]] = values[i][c];
+      for (var c = 0; c < header.length; c++) {
+        var v = values[i][c];
+        if (v instanceof Date) {
+          v = Utilities.formatDate(v, Session.getScriptTimeZone(), 'M/d/yyyy h:mm a');
+        }
+        // Send everything as plain text so google.script.run never chokes on it.
+        obj[header[c]] = (v === null || v === undefined) ? '' : String(v);
+      }
       rows.push(obj);
     }
   }
@@ -392,12 +399,13 @@ function adminHtml_() {
     var pw=document.getElementById('pw').value;
     document.getElementById('loginErr').textContent='Loading...';
     call('adminGetData',[pw]).then(function(r){
-      if(!r||!r.ok){document.getElementById('loginErr').textContent='Wrong password.';return;}
+      if(!r){document.getElementById('loginErr').textContent='Server error loading data - try Refresh, or tell Claude.';return;}
+      if(!r.ok){document.getElementById('loginErr').textContent='Wrong password.';return;}
       KEY=pw;CAP=r.capacity;DAY_RATE=r.dayRate;EXT_RATE=r.extRate;DATA=r.rows||[];
       document.getElementById('login').style.display='none';
       document.getElementById('app').style.display='block';
       buildDaySelect();render();
-    }).catch(function(){document.getElementById('loginErr').textContent='Error - try again.';});
+    }).catch(function(e){document.getElementById('loginErr').textContent='Error: '+((e&&e.message)?e.message:e);});
   }
 
   function load(){call('adminGetData',[KEY]).then(function(r){if(r&&r.ok){DATA=r.rows||[];render();}});}
