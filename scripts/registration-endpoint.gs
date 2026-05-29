@@ -27,6 +27,9 @@ var CONTACT     = '(610) 804-9222';
 var DAY_RATE    = 100;
 var EXT_RATE    = 35;
 var DAY_SEP     = ' | ';
+// Season window for the calendar (months 0-indexed: 5=June, 7=August). Match the website.
+var SEASON_START = new Date(2026, 5, 27); // Sat, Jun 27, 2026
+var SEASON_END   = new Date(2026, 7, 30); // Sun, Aug 30, 2026
 
 // [payloadKey, Header] - column order. ID is first, Paid? is appended at the end.
 var FIELDS = [
@@ -139,7 +142,23 @@ function adminGetData(key) {
       rows.push(obj);
     }
   }
-  return { ok: true, capacity: CAPACITY, dayRate: DAY_RATE, extRate: EXT_RATE, rows: rows };
+  return { ok: true, capacity: CAPACITY, dayRate: DAY_RATE, extRate: EXT_RATE, rows: rows, sessionDays: sessionDays_() };
+}
+
+// All Sat/Sun session days in the season, as {label, y, m, d} for the calendar grid.
+function sessionDays_() {
+  var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var out = [];
+  var dt = new Date(SEASON_START.getTime());
+  while (dt <= SEASON_END) {
+    var dow = dt.getDay();
+    if (dow === 0 || dow === 6) {
+      out.push({ label: days[dow] + ', ' + months[dt.getMonth()] + ' ' + dt.getDate(), y: dt.getFullYear(), m: dt.getMonth(), d: dt.getDate() });
+    }
+    dt.setDate(dt.getDate() + 1);
+  }
+  return out;
 }
 
 function adminSetPaid(key, id, value) {
@@ -339,6 +358,21 @@ function adminHtml_() {
   .modal label{display:block;font-size:12px;font-weight:700;color:var(--ocean-deep);margin-top:10px;}
   .modal input,.modal textarea{width:100%;padding:8px;border:1.5px solid #d8cfb4;border-radius:8px;font-size:14px;margin-top:3px;}
   .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+  /* calendar */
+  .cal{background:#fff;border:1px solid #e3dcc8;border-radius:12px;padding:14px;margin-bottom:14px;}
+  .cal h3{color:var(--ocean-deep);margin-bottom:8px;}
+  .cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+  .cdh{text-align:center;font-size:11px;font-weight:700;color:var(--ink-soft);padding:2px;}
+  .ccell{min-height:50px;border:1px solid #eee;border-radius:7px;padding:3px;}
+  .ccell.empty{border:none;background:transparent;}
+  .cnum{font-size:11px;color:var(--ink-soft);}
+  .ccell.open{background:#dff3e4;border-color:#bfe6cd;}
+  .ccell.near{background:#fdebcf;border-color:#f5d9a8;}
+  .ccell.full{background:#fde2d6;border-color:#f3b9a0;}
+  .ccount{font-size:14px;font-weight:800;color:var(--ocean-deep);text-align:center;margin-top:3px;}
+  .clegend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);margin-bottom:10px;}
+  .clegend span{display:inline-flex;align-items:center;gap:5px;}
+  .cdot{width:12px;height:12px;border-radius:3px;display:inline-block;}
   @media print{header,.controls,.stats,.tabs,.noprint,.btn,button{display:none!important;}.day-card{border:none;}body{background:#fff;}}
 </style></head><body>
 
@@ -356,6 +390,7 @@ function adminHtml_() {
     <div style="display:flex;gap:6px;flex-wrap:wrap;">
       <div class="tabs">
         <button class="tab active" id="tabAll" onclick="showTab('all')">All</button>
+        <button class="tab" id="tabCal" onclick="showTab('cal')">Calendar</button>
         <button class="tab" id="tabDay" onclick="showTab('day')">By day</button>
       </div>
       <button class="btn btn-sm" onclick="openAdd()">+ Add</button>
@@ -377,6 +412,15 @@ function adminHtml_() {
       <div class="tablewrap"><table id="tbl"></table></div>
     </div>
 
+    <div id="viewCal" style="display:none">
+      <div class="clegend">
+        <span><i class="cdot" style="background:#dff3e4"></i> Open</span>
+        <span><i class="cdot" style="background:#fdebcf"></i> Filling up</span>
+        <span><i class="cdot" style="background:#fde2d6"></i> Full</span>
+      </div>
+      <div id="calOut"></div>
+    </div>
+
     <div id="viewDay" style="display:none">
       <div class="controls noprint">
         <select id="daySel" onchange="renderDay()"></select>
@@ -390,7 +434,7 @@ function adminHtml_() {
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
 
 <script>
-  var KEY='', DATA=[], CAP=40, DAY_RATE=100, EXT_RATE=35, TAB='all';
+  var KEY='', DATA=[], CAP=40, DAY_RATE=100, EXT_RATE=35, TAB='all', SESSION=[];
   var SEP=${JSON.stringify(DAY_SEP)};
 
   function call(fn,args){return new Promise(function(res,rej){google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn].apply(google.script.run,args);});}
@@ -401,7 +445,7 @@ function adminHtml_() {
     call('adminGetData',[pw]).then(function(r){
       if(!r){document.getElementById('loginErr').textContent='Server error loading data - try Refresh, or tell Claude.';return;}
       if(!r.ok){document.getElementById('loginErr').textContent='Wrong password.';return;}
-      KEY=pw;CAP=r.capacity;DAY_RATE=r.dayRate;EXT_RATE=r.extRate;DATA=r.rows||[];
+      KEY=pw;CAP=r.capacity;DAY_RATE=r.dayRate;EXT_RATE=r.extRate;DATA=r.rows||[];SESSION=r.sessionDays||[];
       document.getElementById('login').style.display='none';
       document.getElementById('app').style.display='block';
       buildDaySelect();render();
@@ -410,7 +454,7 @@ function adminHtml_() {
 
   function load(){call('adminGetData',[KEY]).then(function(r){if(r&&r.ok){DATA=r.rows||[];render();}});}
 
-  function render(){renderStats();renderTable();renderDay();}
+  function render(){renderStats();renderTable();renderDay();renderCalendar();}
 
   function renderStats(){
     var total=DATA.length, paid=DATA.filter(isPaid).length, rev=DATA.reduce(function(s,r){return s+(Number(r['Total $'])||0);},0);
@@ -479,9 +523,43 @@ function adminHtml_() {
 
   function showTab(t){TAB=t;
     document.getElementById('tabAll').classList.toggle('active',t==='all');
+    document.getElementById('tabCal').classList.toggle('active',t==='cal');
     document.getElementById('tabDay').classList.toggle('active',t==='day');
     document.getElementById('viewAll').style.display=t==='all'?'block':'none';
+    document.getElementById('viewCal').style.display=t==='cal'?'block':'none';
     document.getElementById('viewDay').style.display=t==='day'?'block':'none';
+  }
+
+  function dayTally(){
+    var t={};DATA.forEach(function(r){pretty(r['Days Requested']).split(', ').forEach(function(d){if(d)t[d]=(t[d]||0)+1;});});return t;
+  }
+
+  function renderCalendar(){
+    var tally=dayTally();
+    var months={};
+    SESSION.forEach(function(s){var k=s.y+'-'+s.m;(months[k]=months[k]||[]).push(s);});
+    var monthNames=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var dow=['S','M','T','W','T','F','S'];
+    var html='';
+    Object.keys(months).forEach(function(k){
+      var list=months[k];var y=list[0].y,m=list[0].m;var sset={};
+      list.forEach(function(s){sset[s.d]=s.label;});
+      var first=new Date(y,m,1).getDay();
+      var dim=new Date(y,m+1,0).getDate();
+      html+='<div class="cal"><h3>'+monthNames[m]+' '+y+'</h3><div class="cgrid">';
+      dow.forEach(function(x){html+='<div class="cdh">'+x+'</div>';});
+      for(var i=0;i<first;i++)html+='<div class="ccell empty"></div>';
+      for(var day=1;day<=dim;day++){
+        if(sset[day]){
+          var n=tally[sset[day]]||0;var cls=n>=CAP?'full':(n>=CAP*0.8?'near':'open');
+          html+='<div class="ccell '+cls+'"><div class="cnum">'+day+'</div><div class="ccount">'+n+'/'+CAP+'</div></div>';
+        } else {
+          html+='<div class="ccell"><div class="cnum">'+day+'</div></div>';
+        }
+      }
+      html+='</div></div>';
+    });
+    document.getElementById('calOut').innerHTML=html||'<p class="muted">No session days configured.</p>';
   }
 
   function togglePaid(id){
