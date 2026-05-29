@@ -9,11 +9,11 @@ import {
   EXTENDED_RATE,
   CAPACITY,
   DAY_SEP,
-  weekendDates,
+  sessionDates,
 } from '../config.js'
 import { jsonp } from '../jsonp.js'
 
-const DAYS = weekendDates()
+const DAYS = sessionDates()
 
 const WAIVER_TEXT = `DISCLAIMER OF LIABILITY
 Field Day Adventures and its staff do not assume liability for any injuries incurred while at camp or on the way to camp. Parents or guardians should contact their own insurance carrier to obtain additional insurance for the camper, if necessary. As a condition of enrollment, the following release of liability must be agreed to by the camper's parent or guardian.

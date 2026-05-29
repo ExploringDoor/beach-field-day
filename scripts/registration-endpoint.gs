@@ -27,9 +27,13 @@ var CONTACT     = '(610) 804-9222';
 var DAY_RATE    = 100;
 var EXT_RATE    = 35;
 var DAY_SEP     = ' | ';
-// Season window for the calendar (months 0-indexed: 5=June, 7=August). Match the website.
-var SEASON_START = new Date(2026, 5, 27); // Sat, Jun 27, 2026
-var SEASON_END   = new Date(2026, 7, 30); // Sun, Aug 30, 2026
+// Two session windows (months 0-indexed: 5=June, 7=August). Match the website.
+//   Sat/Sun:  Jun 27 - Aug 30, 2026
+//   Mon-Fri:  Jun 29 - Aug 21, 2026
+var WEEKEND_START = new Date(2026, 5, 27);
+var WEEKEND_END   = new Date(2026, 7, 30);
+var WEEKDAY_START = new Date(2026, 5, 29);
+var WEEKDAY_END   = new Date(2026, 7, 21);
 
 // [payloadKey, Header] - column order. ID is first, Paid? is appended at the end.
 var FIELDS = [
@@ -145,15 +149,19 @@ function adminGetData(key) {
   return { ok: true, capacity: CAPACITY, dayRate: DAY_RATE, extRate: EXT_RATE, rows: rows, sessionDays: sessionDays_() };
 }
 
-// All Sat/Sun session days in the season, as {label, y, m, d} for the calendar grid.
+// Every session day across both windows, as {label, y, m, d} for the calendar grid.
 function sessionDays_() {
   var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var out = [];
-  var dt = new Date(SEASON_START.getTime());
-  while (dt <= SEASON_END) {
+  var earliest = WEEKEND_START < WEEKDAY_START ? WEEKEND_START : WEEKDAY_START;
+  var latest = WEEKEND_END > WEEKDAY_END ? WEEKEND_END : WEEKDAY_END;
+  var dt = new Date(earliest.getTime());
+  while (dt <= latest) {
     var dow = dt.getDay();
-    if (dow === 0 || dow === 6) {
+    var isWeekend = (dow === 0 || dow === 6) && dt >= WEEKEND_START && dt <= WEEKEND_END;
+    var isWeekday = dow >= 1 && dow <= 5 && dt >= WEEKDAY_START && dt <= WEEKDAY_END;
+    if (isWeekend || isWeekday) {
       out.push({ label: days[dow] + ', ' + months[dt.getMonth()] + ' ' + dt.getDate(), y: dt.getFullYear(), m: dt.getMonth(), d: dt.getDate() });
     }
     dt.setDate(dt.getDate() + 1);

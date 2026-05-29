@@ -32,8 +32,8 @@ const FAQS = [
     a: 'Register through our online form, then send payment via Venmo or Zelle — the payment details are shown right on the form and on the confirmation screen. Your child\'s spot is not confirmed until payment is received.',
   },
   {
-    q: 'Are weekday sessions coming?',
-    a: 'Yes — we\'re starting with Saturdays & Sundays and plan to add Monday–Friday sessions later in the summer based on demand.',
+    q: 'What days do you run?',
+    a: 'Saturdays & Sundays from June 27 through August 30, and Mondays through Fridays from June 29 through August 21. All sessions are 9am–Noon (or until 1pm with the extended-stay add-on). Sign up for any single day or any combination.',
   },
 ]
 

@@ -9,10 +9,10 @@ export default function About() {
               Two PE teachers. One <em>perfect</em> beach morning.
             </h2>
             <p className="section-lede">
-              Field Day Adventures is run by certified Health &amp; Physical Education teachers with years of experience working with elementary-age kids. We bring real lesson-planning, real safety standards, and a real love for what we do — to the beach every weekend.
+              Field Day Adventures is run by certified Health &amp; Physical Education teachers with years of experience working with elementary-age kids. We bring real lesson-planning, real safety standards, and a real love for what we do — to the beach every morning all summer.
             </p>
             <p className="text-[17px] leading-relaxed text-ink-soft">
-              No screens. No standing around. No ocean. Just three hours of activities designed to wear your kid out in the best possible way — so you can have your Saturday and Sunday mornings back.
+              No screens. No standing around. No ocean. Just three hours of activities designed to wear your kid out in the best possible way — so you can have your summer mornings back.
             </p>
           </div>
           <div

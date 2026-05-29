@@ -1,6 +1,6 @@
 # Field Day Adventures
 
-Marketing + registration site for **Field Day Adventures** — a drop-off beach camp for kids ages 4–9 in Longport, NJ. Meets at the Longport basketball courts. Saturdays & Sundays, 9am–Noon, $100/day (with an optional 1pm extended-stay add-on for +$35/day).
+Marketing + registration site for **Field Day Adventures** — a drop-off beach camp for kids ages 4–9 in Longport, NJ. Meets at the Longport basketball courts. Mon–Sun, 9am–Noon (Sat/Sun Jun 27–Aug 30, Mon–Fri Jun 29–Aug 21), $100/day (with an optional 1pm extended-stay add-on for +$35/day).
 
 ## Stack
 

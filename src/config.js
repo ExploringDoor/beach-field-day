@@ -22,19 +22,27 @@ export const CAPACITY = 40
 // Separator used between dates in the Days / Extended fields (must match the Apps Script).
 export const DAY_SEP = ' | '
 
-// Season window for the "Which days?" checkboxes (months are 0-indexed: 5 = June)
-const SEASON_START = new Date(2026, 5, 27) // Sat, Jun 27, 2026
-const SEASON_END = new Date(2026, 7, 30) // Sun, Aug 30, 2026
+// Two session windows (months are 0-indexed: 5 = June, 7 = August):
+//   - Sat/Sun:   Jun 27 - Aug 30, 2026
+//   - Mon-Fri:   Jun 29 - Aug 21, 2026
+const WEEKEND_START = new Date(2026, 5, 27) // Sat, Jun 27, 2026
+const WEEKEND_END = new Date(2026, 7, 30) // Sun, Aug 30, 2026
+const WEEKDAY_START = new Date(2026, 5, 29) // Mon, Jun 29, 2026
+const WEEKDAY_END = new Date(2026, 7, 21) // Fri, Aug 21, 2026
 
-// Returns ["Sat, Jun 27", "Sun, Jun 28", …] for every weekend day in the window.
-export function weekendDates() {
+// Returns every available session day across both windows, in chronological order.
+export function sessionDates() {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   const out = []
-  const d = new Date(SEASON_START.getTime())
-  while (d <= SEASON_END) {
+  const earliest = WEEKEND_START < WEEKDAY_START ? WEEKEND_START : WEEKDAY_START
+  const latest = WEEKEND_END > WEEKDAY_END ? WEEKEND_END : WEEKDAY_END
+  const d = new Date(earliest.getTime())
+  while (d <= latest) {
     const dow = d.getDay()
-    if (dow === 0 || dow === 6) {
+    const isWeekend = (dow === 0 || dow === 6) && d >= WEEKEND_START && d <= WEEKEND_END
+    const isWeekday = dow >= 1 && dow <= 5 && d >= WEEKDAY_START && d <= WEEKDAY_END
+    if (isWeekend || isWeekday) {
       out.push(`${days[dow]}, ${months[d.getMonth()]} ${d.getDate()}`)
     }
     d.setDate(d.getDate() + 1)
