@@ -10,7 +10,7 @@ export const REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx
 export const VENMO_HANDLE = '@Adam-Miller-23'
 export const ZELLE_CONTACT = '(610) 804-9222'
 export const CONTACT_PHONE = '(610) 804-9222'
-export const CONTACT_EMAIL = 'adam.miller.22@gmail.com'
+export const CONTACT_EMAIL = 'hello@fielddayadventures.com'
 
 // Pricing
 export const DAY_RATE = 100

@@ -31,7 +31,7 @@ function createBeachFieldDayForm() {
     'Drop-off beach camp for kids ages 4–9 in Longport, NJ. Saturdays & Sundays, ' +
     '9am–Noon, $80/day (optional stay until 1pm for +$30/day). We meet at the ' +
     'basketball courts at 35th & Atlantic.\n\n' +
-    'Questions? Email adam.miller.22@gmail.com or text (610) 804-9222.'
+    'Questions? Email hello@fielddayadventures.com or text (610) 804-9222.'
   );
 
   form.setCollectEmail(false);          // we ask for email explicitly, so no forced Google login
