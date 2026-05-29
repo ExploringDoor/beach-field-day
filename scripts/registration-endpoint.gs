@@ -1,24 +1,24 @@
 /**
- * Field Day Adventures — registration endpoint + admin (Google Apps Script Web App).
+ * Field Day Adventures - registration endpoint + admin (Google Apps Script Web App).
  *
  * THREE jobs:
- *   • POST (form submit)        → saves a row (with unique ID), emails owner + parent
- *   • GET ?action=counts        → per-date booked counts for the website form  [JSONP]
- *   • GET (no params)           → serves the password-gated ADMIN web app (HTML)
+ *   - POST (form submit)        -> saves a row (with unique ID), emails owner + parent
+ *   - GET ?action=counts        -> per-date booked counts for the website form  [JSONP]
+ *   - GET (no params)           -> serves the password-gated ADMIN web app (HTML)
  *
  * The admin is served BY Google, so no browser extension / CORS / ad-blocker can ever
  * block it. It can read AND write the sheet (mark paid, edit, cancel) via google.script.run.
  *
- * ── DEPLOY / REDEPLOY ─────────────────────────────────────────────────────────
+ * -- DEPLOY / REDEPLOY ---------------------------------------------------------
  *  Paste this whole file into the Apps Script project (replace all), Save, then:
- *  Deploy ▸ Manage deployments ▸ ✏️ ▸ Version: New version ▸ Deploy.
+ *  Deploy > Manage deployments >  > Version: New version > Deploy.
  *  Keep "Execute as: Me" and "Who has access: Anyone". The /exec URL stays the same.
  *
  *  ADMIN URL = your /exec URL (open it in a browser, enter the password).
  */
 
 var OWNER_EMAIL = 'adam.miller.22@gmail.com';
-var SHEET_NAME  = 'Field Day Adventures — Registrations';
+var SHEET_NAME  = 'Field Day Adventures - Registrations';
 var ADMIN_KEY   = 'L0ngport';
 var CAPACITY    = 40;
 var VENMO       = '@Adam-Miller-23';
@@ -28,7 +28,7 @@ var DAY_RATE    = 100;
 var EXT_RATE    = 35;
 var DAY_SEP     = ' | ';
 
-// [payloadKey, Header] — column order. ID is first, Paid? is appended at the end.
+// [payloadKey, Header] - column order. ID is first, Paid? is appended at the end.
 var FIELDS = [
   ['id',           'ID'],
   ['submittedAt',  'Submitted'],
@@ -50,7 +50,7 @@ var FIELDS = [
 ];
 var PAID_HEADER = 'Paid?';
 
-// ── ROUTING ───────────────────────────────────────────────────────────────────
+// -- ROUTING -------------------------------------------------------------------
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -76,7 +76,7 @@ function doGet(e) {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-// ── SAVE ────────────────────────────────────────────────────────────────────--
+// -- SAVE ----------------------------------------------------------------------
 function saveRow_(data) {
   var sheet = getSpreadsheet_().getSheets()[0];
   if (sheet.getLastRow() === 0) {
@@ -118,7 +118,7 @@ function countsByDate_() {
   return counts;
 }
 
-// ── ADMIN SERVER FUNCTIONS (called from the HTML via google.script.run) ────────
+// -- ADMIN SERVER FUNCTIONS (called from the HTML via google.script.run) --------
 function adminGetData(key) {
   if (key !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
   var sheet = getSpreadsheet_().getSheets()[0];
@@ -214,13 +214,13 @@ function getSpreadsheet_() {
   return ss;
 }
 
-// ── Helper functions you can Run manually from the editor ──────────────────────
+// -- Helper functions you can Run manually from the editor ----------------------
 function showSheetUrl() { Logger.log(getSpreadsheet_().getUrl()); }
 function clearAllRows() { getSpreadsheet_().getSheets()[0].clear(); Logger.log('Sheet cleared.'); }
 
-// ── EMAIL ───────────────────────────────────────────────────────────────────--
+// -- EMAIL ---------------------------------------------------------------------
 function notifyOwner_(d) {
-  var subject = 'New registration: ' + (d.childName || 'child') + ' — $' + (d.total || '0');
+  var subject = 'New registration: ' + (d.childName || 'child') + ' - $' + (d.total || '0');
   var body =
     'New Field Day Adventures registration\n\n' +
     'Child: ' + d.childName + ' (age ' + (d.childAge || 'n/a') + ')\n' +
@@ -230,29 +230,29 @@ function notifyOwner_(d) {
     'Extended (1pm): ' + (pretty_(d.extendedDays) || 'none') + '\n' +
     'TOTAL OWED: $' + d.total + '\nPay method: ' + d.payment + '\n' +
     'Emergency: ' + d.emergency + '\nAllergies: ' + d.allergies + '\n' +
-    'Notes: ' + (d.notes || '—') + '\n\nWatch for $' + d.total + ' via ' + d.payment + '.';
+    'Notes: ' + (d.notes || '-') + '\n\nWatch for $' + d.total + ' via ' + d.payment + '.';
   MailApp.sendEmail(OWNER_EMAIL, subject, body);
 }
 
 function confirmParent_(d) {
   if (!d.email) return;
-  var subject = "You're registered for Field Day Adventures! 🏖️";
+  var subject = "You're registered for Field Day Adventures! ";
   var body =
     'Hi ' + d.firstName + ',\n\n' +
     'Thanks for registering ' + d.childName + ' for Field Day Adventures!\n\n' +
     'Days: ' + pretty_(d.days) + '\n' +
     (d.extendedDays ? 'Extended until 1pm on: ' + pretty_(d.extendedDays) + '\n' : '') + '\n' +
-    "⚠️ IMPORTANT — your child's spot is NOT confirmed until payment is received.\n\n" +
+    " IMPORTANT - your child's spot is NOT confirmed until payment is received.\n\n" +
     'AMOUNT TO SEND: $' + d.total + '\n' +
     'Please send it with ' + d.childName + "'s name in the note:\n" +
-    '  • Venmo: ' + VENMO + '\n  • Zelle: ' + ZELLE + '\n\n' +
+    '  - Venmo: ' + VENMO + '\n  - Zelle: ' + ZELLE + '\n\n' +
     "Once we receive payment, we'll text you to confirm the spot.\n\n" +
     'WHAT TO BRING each day:\n' +
-    '  • Sunscreen applied at home (we can\'t apply on arrival)\n' +
-    '  • Labeled water bottle, hat, and towel\n' +
-    '  • Athletic clothes + closed-toe sneakers (no flip flops)\n' +
-    '  • Swimsuit underneath on water-game days\n' +
-    (d.extendedDays ? '  • A small packed lunch on your extended-stay days\n' : '') + '\n' +
+    '  - Sunscreen applied at home (we can\'t apply on arrival)\n' +
+    '  - Labeled water bottle, hat, and towel\n' +
+    '  - Athletic clothes + closed-toe sneakers (no flip flops)\n' +
+    '  - Swimsuit underneath on water-game days\n' +
+    (d.extendedDays ? '  - A small packed lunch on your extended-stay days\n' : '') + '\n' +
     'WHERE: the basketball courts at 35th & Atlantic, Longport, NJ\n' +
     'WHEN: drop-off 9am, pick-up Noon (1pm on extended days)\n\n' +
     'Questions? Reply to this email or text ' + CONTACT + '.\n\nSee you on the sand!\nField Day Adventures';
@@ -263,7 +263,7 @@ function pretty_(s) {
   return String(s || '').split(DAY_SEP).map(function (x) { return x.trim(); }).filter(String).join(', ');
 }
 
-// ── OUTPUT HELPERS ─────────────────────────────────────────────────────────────
+// -- OUTPUT HELPERS -------------------------------------------------------------
 function reply_(callback, obj) {
   if (callback) {
     return ContentService.createTextOutput(callback + '(' + JSON.stringify(obj) + ')')
@@ -275,7 +275,7 @@ function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
-// ── ADMIN WEB APP (HTML/CSS/JS served by Google) ───────────────────────────────
+// -- ADMIN WEB APP (HTML/CSS/JS served by Google) -------------------------------
 function adminHtml_() {
   return `<!doctype html><html><head><meta charset="utf-8">
 <style>
