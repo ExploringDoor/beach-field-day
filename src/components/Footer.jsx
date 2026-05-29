@@ -5,7 +5,7 @@ export default function Footer() {
         <img
           src="/logo.png"
           alt="Field Day Adventures logo"
-          className="mx-auto mb-4 h-28 w-28 rounded-full object-cover"
+          className="mx-auto mb-4 h-28 w-28 object-contain"
         />
         <div className="mb-3 font-display text-2xl font-black text-cream">
           Field Day Adventures

@@ -46,7 +46,7 @@ export default function AdminPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-cream px-5">
         <form onSubmit={submit} className="w-full max-w-[380px] rounded-3xl border border-ocean/10 bg-white/70 p-8 text-center">
-          <img src="/logo.png" alt="" className="mx-auto mb-4 h-20 w-20 rounded-full object-cover" />
+          <img src="/logo.png" alt="" className="mx-auto mb-4 h-20 w-20 object-contain" />
           <h1 className="font-display text-[26px] font-black text-ocean-deep">Admin</h1>
           <p className="mt-1 text-[14px] text-ink-soft">Enter the admin password to view registrations.</p>
           <input
@@ -93,7 +93,7 @@ export default function AdminPage() {
       >
         <div className="mx-auto flex max-w-[1200px] items-center justify-between px-5 py-3">
           <div className="flex items-center gap-2 font-display text-[19px] font-black text-ocean-deep">
-            <img src="/logo.png" alt="" className="h-9 w-9 rounded-full object-cover" />
+            <img src="/logo.png" alt="" className="h-9 w-9 object-contain" />
             Admin
           </div>
           <div className="flex items-center gap-4 text-[14px]">

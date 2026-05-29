@@ -14,7 +14,7 @@ export default function Hero() {
         src="/logo.png"
         alt=""
         aria-hidden="true"
-        className="absolute right-8 top-24 hidden h-[340px] w-[340px] animate-float rounded-full object-cover drop-shadow-xl lg:block"
+        className="absolute right-8 top-24 hidden h-[340px] w-[340px] animate-float object-contain drop-shadow-xl lg:block"
       />
       <div
         className="absolute bottom-0 left-0 h-[120px] w-full"
@@ -30,7 +30,7 @@ export default function Hero() {
         <img
           src="/logo.png"
           alt="Field Day Adventures logo"
-          className="mx-auto mb-6 h-40 w-40 animate-float rounded-full object-cover drop-shadow-xl sm:h-48 sm:w-48 lg:hidden"
+          className="mx-auto mb-6 h-40 w-40 animate-float object-contain drop-shadow-xl sm:h-48 sm:w-48 lg:hidden"
         />
         <span
           className="mb-6 inline-block rounded-full border border-ocean/15 px-4 py-2 text-[13px] font-bold uppercase tracking-[0.06em] text-ocean-deep"

@@ -16,7 +16,7 @@ export default function Nav() {
           <img
             src="/logo.png"
             alt="Field Day Adventures logo"
-            className="h-11 w-11 rounded-full object-cover"
+            className="h-11 w-11 object-contain"
           />
           Field Day Adventures
         </a>

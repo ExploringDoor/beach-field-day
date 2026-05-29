@@ -390,7 +390,7 @@ function SuccessScreen({ form, total }) {
     <div className="min-h-screen bg-cream">
       <FormHeader />
       <main className="mx-auto max-w-[620px] px-5 pb-24 pt-28 text-center sm:pt-32">
-        <img src="/logo.png" alt="" className="mx-auto mb-6 h-28 w-28 rounded-full object-cover" />
+        <img src="/logo.png" alt="" className="mx-auto mb-6 h-28 w-28 object-contain" />
         <h1 className="text-[clamp(30px,6vw,44px)] text-ocean-deep">You're registered! 🏖️</h1>
         <p className="mx-auto mt-3 max-w-[480px] text-[16px] text-ink-soft">
           Thanks, {form.firstName}. We've got {form.childName}'s registration for{' '}
@@ -430,7 +430,7 @@ function FormHeader() {
     >
       <div className="mx-auto flex max-w-[760px] items-center justify-between px-5 py-3">
         <Link to="/" className="flex items-center gap-2 font-display text-[19px] font-black text-ocean-deep">
-          <img src="/logo.png" alt="Field Day Adventures logo" className="h-9 w-9 rounded-full object-cover" />
+          <img src="/logo.png" alt="Field Day Adventures logo" className="h-9 w-9 object-contain" />
           Field Day Adventures
         </Link>
         <Link to="/" className="text-[14px] font-medium text-ink-soft transition-colors hover:text-ocean-deep">
