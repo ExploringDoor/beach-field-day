@@ -497,7 +497,7 @@ function adminHtml_() {
 
   function buildDaySelect(){
     var days={};
-    DATA.forEach(function(r){pretty(r['Days Requested']).split(', ').forEach(function(d){if(d)days[d]=1;});});
+    DATA.forEach(function(r){dayList(r['Days Requested']).forEach(function(d){if(d)days[d]=1;});});
     var list=Object.keys(days);
     var sel=document.getElementById('daySel');
     sel.innerHTML=list.map(function(d){return '<option>'+d+'</option>';}).join('')||'<option>No days yet</option>';
@@ -506,8 +506,8 @@ function adminHtml_() {
   function renderDay(){
     var sel=document.getElementById('daySel');var day=sel.value;
     if(!day){document.getElementById('dayOut').innerHTML='';return;}
-    var roster=DATA.filter(function(r){return pretty(r['Days Requested']).split(', ').indexOf(day)>=0;});
-    var ext=function(r){return pretty(r['Extended Days']).split(', ').indexOf(day)>=0;};
+    var roster=DATA.filter(function(r){return dayList(r['Days Requested']).indexOf(day)>=0;});
+    var ext=function(r){return dayList(r['Extended Days']).indexOf(day)>=0;};
     var h='<div class="day-card"><h3>'+esc(day)+' - '+roster.length+'/'+CAP+' kids</h3>';
     roster.forEach(function(r){
       var al=String(r['Allergies / Restrictions']||'').trim();
@@ -531,7 +531,7 @@ function adminHtml_() {
   }
 
   function dayTally(){
-    var t={};DATA.forEach(function(r){pretty(r['Days Requested']).split(', ').forEach(function(d){if(d)t[d]=(t[d]||0)+1;});});return t;
+    var t={};DATA.forEach(function(r){dayList(r['Days Requested']).forEach(function(d){if(d)t[d]=(t[d]||0)+1;});});return t;
   }
 
   function renderCalendar(){
@@ -621,7 +621,8 @@ function adminHtml_() {
   }
 
   function byId(id){return DATA.filter(function(r){return r['ID']===id;})[0];}
-  function pretty(s){return String(s||'').split(SEP).map(function(x){return x.trim();}).filter(Boolean).join(', ');}
+  function pretty(s){return dayList(s).join(', ');}
+  function dayList(s){return String(s||'').split(SEP).map(function(x){return x.trim();}).filter(Boolean);}
   function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
   function escAttr(s){return esc(s).replace(/"/g,'&quot;');}
 </script>
