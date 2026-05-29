@@ -28,8 +28,8 @@ var DAY_RATE    = 100;
 var EXT_RATE    = 35;
 var DAY_SEP     = ' | ';
 // Two session windows (months 0-indexed: 5=June, 7=August). Match the website.
-//   Sat/Sun:  Jun 27 - Aug 30, 2026
-//   Mon-Fri:  Jun 29 - Aug 21, 2026
+//   Sat/Sun:         Jun 27 - Aug 30, 2026
+//   Mon & Fri only:  Jun 29 - Aug 21, 2026
 var WEEKEND_START = new Date(2026, 5, 27);
 var WEEKEND_END   = new Date(2026, 7, 30);
 var WEEKDAY_START = new Date(2026, 5, 29);
@@ -160,8 +160,8 @@ function sessionDays_() {
   while (dt <= latest) {
     var dow = dt.getDay();
     var isWeekend = (dow === 0 || dow === 6) && dt >= WEEKEND_START && dt <= WEEKEND_END;
-    var isWeekday = dow >= 1 && dow <= 5 && dt >= WEEKDAY_START && dt <= WEEKDAY_END;
-    if (isWeekend || isWeekday) {
+    var isMonOrFri = (dow === 1 || dow === 5) && dt >= WEEKDAY_START && dt <= WEEKDAY_END;
+    if (isWeekend || isMonOrFri) {
       out.push({ label: days[dow] + ', ' + months[dt.getMonth()] + ' ' + dt.getDate(), y: dt.getFullYear(), m: dt.getMonth(), d: dt.getDate() });
     }
     dt.setDate(dt.getDate() + 1);

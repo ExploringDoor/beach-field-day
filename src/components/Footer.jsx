@@ -11,7 +11,7 @@ export default function Footer() {
           Field Day Adventures
         </div>
         <div className="mb-6 text-sm opacity-70">
-          Longport, NJ · Mon–Sun · Summer 2026
+          Longport, NJ · Mon, Fri, Sat &amp; Sun · Summer 2026
         </div>
         <div className="mb-8 flex flex-wrap justify-center gap-6 text-[15px]">
           <a href="mailto:hello@fielddayadventures.com" className="text-sand-light transition-colors hover:text-coral">

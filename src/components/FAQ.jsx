@@ -33,7 +33,7 @@ const FAQS = [
   },
   {
     q: 'What days do you run?',
-    a: 'Saturdays & Sundays from June 27 through August 30, and Mondays through Fridays from June 29 through August 21. All sessions are 9am–Noon (or until 1pm with the extended-stay add-on). Sign up for any single day or any combination.',
+    a: 'Saturdays & Sundays from June 27 through August 30, plus Mondays & Fridays from June 29 through August 21. All sessions are 9am–Noon (or until 1pm with the extended-stay add-on). Sign up for any single day or any combination.',
   },
 ]
 

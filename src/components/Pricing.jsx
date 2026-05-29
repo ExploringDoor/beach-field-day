@@ -11,7 +11,7 @@ export default function Pricing() {
             Simple. <em>Flexible.</em> No commitment.
           </h2>
           <p className="section-lede mx-auto text-center">
-            Sign up for any day. Saturdays &amp; Sundays run June 27 – August 30, and weekdays (Mon–Fri) run June 29 – August 21. All sessions 9am – Noon.
+            Sign up for any day. Saturdays &amp; Sundays run June 27 – August 30, and Mondays &amp; Fridays run June 29 – August 21. All sessions 9am – Noon.
           </p>
         </div>
         <div
@@ -34,7 +34,7 @@ export default function Pricing() {
             No bundles. No memberships. Just show up.
           </div>
           <div className="relative z-10 my-8 grid gap-4 sm:grid-cols-3">
-            <Chip top="Days" bottom="Mon–Sun" />
+            <Chip top="Days" bottom="Mon/Fri/Sat/Sun" />
             <Chip top="Time" bottom="9am – Noon" />
             <Chip top="Location" bottom="Longport, NJ" />
           </div>
