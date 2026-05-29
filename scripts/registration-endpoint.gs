@@ -71,7 +71,7 @@ function doGet(e) {
   }
   // Otherwise: serve the admin web app.
   return HtmlService.createHtmlOutput(adminHtml_())
-    .setTitle('Field Day Adventures — Admin')
+    .setTitle('Field Day Adventures Admin')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
@@ -164,6 +164,18 @@ function adminUpdate(key, id, patch) {
     }
   });
   return { ok: true };
+}
+
+function adminAdd(key, patch) {
+  if (key !== ADMIN_KEY) return { ok: false, error: 'unauthorized' };
+  var data = {};
+  FIELDS.forEach(function (f) { data[f[0]] = patch[f[1]] !== undefined ? patch[f[1]] : ''; });
+  data.id = Utilities.getUuid();
+  if (!data.submittedAt) {
+    data.submittedAt = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }) + ' (added manually)';
+  }
+  saveRow_(data); // appends a row; no emails sent for manual adds
+  return { ok: true, id: data.id };
 }
 
 function writeCell_(id, header, value) {
@@ -325,7 +337,7 @@ function adminHtml_() {
 
 <div id="login">
   <h1>Field Day Adventures</h1>
-  <p class="muted" style="margin-top:4px;">Admin — enter password</p>
+  <p class="muted" style="margin-top:4px;">Admin - enter password</p>
   <input id="pw" type="password" placeholder="Password" autofocus onkeydown="if(event.key==='Enter')login()">
   <button class="btn" style="width:100%" onclick="login()">View registrations</button>
   <div id="loginErr" class="err"></div>
@@ -333,14 +345,15 @@ function adminHtml_() {
 
 <div id="app" style="display:none">
   <header><div class="wrap hrow">
-    <h1>Field Day Adventures — Admin</h1>
+    <h1>Field Day Adventures Admin</h1>
     <div style="display:flex;gap:6px;flex-wrap:wrap;">
       <div class="tabs">
         <button class="tab active" id="tabAll" onclick="showTab('all')">All</button>
         <button class="tab" id="tabDay" onclick="showTab('day')">By day</button>
       </div>
-      <button class="btn btn-sm" onclick="load()">↻ Refresh</button>
-      <button class="btn btn-sm btn-ghost" onclick="exportCsv()">⬇ CSV</button>
+      <button class="btn btn-sm" onclick="openAdd()">+ Add</button>
+      <button class="btn btn-sm" onclick="load()">Refresh</button>
+      <button class="btn btn-sm btn-ghost" onclick="exportCsv()">Export CSV</button>
     </div>
   </div></header>
 
@@ -349,7 +362,7 @@ function adminHtml_() {
 
     <div id="viewAll">
       <div class="controls">
-        <input id="search" placeholder="Search name, parent, email, phone…" oninput="renderTable()">
+        <input id="search" placeholder="Search name, parent, email, phone..." oninput="renderTable()">
         <select id="paidFilter" onchange="renderTable()">
           <option value="">All</option><option value="paid">Paid</option><option value="unpaid">Unpaid</option>
         </select>
@@ -360,7 +373,7 @@ function adminHtml_() {
     <div id="viewDay" style="display:none">
       <div class="controls noprint">
         <select id="daySel" onchange="renderDay()"></select>
-        <button class="btn btn-sm" onclick="window.print()">🖨 Print roster</button>
+        <button class="btn btn-sm" onclick="window.print()">Print roster</button>
       </div>
       <div id="dayOut"></div>
     </div>
@@ -377,14 +390,14 @@ function adminHtml_() {
 
   function login(){
     var pw=document.getElementById('pw').value;
-    document.getElementById('loginErr').textContent='Loading…';
+    document.getElementById('loginErr').textContent='Loading...';
     call('adminGetData',[pw]).then(function(r){
       if(!r||!r.ok){document.getElementById('loginErr').textContent='Wrong password.';return;}
       KEY=pw;CAP=r.capacity;DAY_RATE=r.dayRate;EXT_RATE=r.extRate;DATA=r.rows||[];
       document.getElementById('login').style.display='none';
       document.getElementById('app').style.display='block';
       buildDaySelect();render();
-    }).catch(function(){document.getElementById('loginErr').textContent='Error — try again.';});
+    }).catch(function(){document.getElementById('loginErr').textContent='Error - try again.';});
   }
 
   function load(){call('adminGetData',[KEY]).then(function(r){if(r&&r.ok){DATA=r.rows||[];render();}});}
@@ -417,7 +430,7 @@ function adminHtml_() {
         +'<td>'+esc(r['Parent First'])+' '+esc(r['Parent Last'])+'<div class="muted">'+esc(r['Email'])+'</div></td>'
         +'<td>'+esc(r['Phone'])+'</td>'
         +'<td>'+esc(pretty(r['Days Requested']))+'</td>'
-        +'<td>'+esc(pretty(r['Extended Days'])||'—')+'</td>'
+        +'<td>'+esc(pretty(r['Extended Days'])||'-')+'</td>'
         +'<td>$'+esc(r['Total $'])+'</td><td>'+esc(r['Pay Method'])+'</td>'
         +'<td>'+(isPaid(r)?'<span class="pill paid">'+esc(r['Paid?'])+'</span>':'<span class="pill no">unpaid</span>')+'</td>'
         +'<td class="'+alClass+'">'+esc(al||'None')+'</td>'
@@ -443,13 +456,13 @@ function adminHtml_() {
     if(!day){document.getElementById('dayOut').innerHTML='';return;}
     var roster=DATA.filter(function(r){return pretty(r['Days Requested']).split(', ').indexOf(day)>=0;});
     var ext=function(r){return pretty(r['Extended Days']).split(', ').indexOf(day)>=0;};
-    var h='<div class="day-card"><h3>'+esc(day)+' — '+roster.length+'/'+CAP+' kids</h3>';
+    var h='<div class="day-card"><h3>'+esc(day)+' - '+roster.length+'/'+CAP+' kids</h3>';
     roster.forEach(function(r){
       var al=String(r['Allergies / Restrictions']||'').trim();
       h+='<div class="roster-row"><div><b>'+esc(r['Child Name'])+'</b> (age '+esc(r['Child Age'])+')'
         +(ext(r)?' <span class="pill paid">until 1pm</span>':'')
-        +(al&&al.toLowerCase()!=='none'?' <span class="allergy">⚠ '+esc(al)+'</span>':'')
-        +'<div class="muted">'+esc(r['Parent First'])+' '+esc(r['Parent Last'])+' · '+esc(r['Phone'])+'</div></div>'
+        +(al&&al.toLowerCase()!=='none'?' <span class="allergy">ALLERGY: '+esc(al)+'</span>':'')
+        +'<div class="muted">'+esc(r['Parent First'])+' '+esc(r['Parent Last'])+' / '+esc(r['Phone'])+'</div></div>'
         +'<div>'+(isPaid(r)?'<span class="pill paid">paid</span>':'<span class="pill no">unpaid</span>')+'</div></div>';
     });
     h+='</div>';
@@ -476,6 +489,23 @@ function adminHtml_() {
   }
 
   var EDIT_FIELDS=['Parent First','Parent Last','Email','Phone','Address','Child Name','Child Age','Emergency Contact','Allergies / Restrictions','Notes','Days Requested','Extended Days','Total $','Pay Method'];
+
+  function openAdd(){
+    var h='<h2>Add registration</h2><p class="muted">Manually add a walk-up or phone signup. For Days/Extended use exactly: <i>Sat, Jun 27'+SEP+'Sun, Jun 28</i>. No emails are sent for manual adds.</p>';
+    EDIT_FIELDS.forEach(function(f){
+      var ml=(f==='Notes'||f==='Allergies / Restrictions'||f==='Address');
+      h+='<label>'+f+'</label>'+(ml?'<textarea data-f="'+f+'" rows="2"></textarea>':'<input data-f="'+f+'" value="">');
+    });
+    h+='<div class="modal-actions"><button class="btn-ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveAdd()">Create</button></div>';
+    document.getElementById('modal').innerHTML=h;document.getElementById('overlay').classList.add('show');
+  }
+  function saveAdd(){
+    var patch={};
+    document.querySelectorAll('#modal [data-f]').forEach(function(el){patch[el.getAttribute('data-f')]=el.value;});
+    if(!patch['Child Name']){alert('Child Name is required.');return;}
+    call('adminAdd',[KEY,patch]).then(function(r){if(r&&r.ok){closeModal();load();}else{alert('Could not add.');}});
+  }
+
   function openEdit(id){
     var r=byId(id);if(!r)return;
     var h='<h2>Edit registration</h2><p class="muted">Tip: for Days/Extended use exactly: <i>Sat, Jun 27'+SEP+'Sun, Jun 28</i></p>';
