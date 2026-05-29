@@ -1,5 +1,5 @@
 /**
- * Beach Field Day — registration endpoint (Google Apps Script Web App).
+ * Field Day Adventures — registration endpoint (Google Apps Script Web App).
  *
  * Handles three jobs:
  *   • POST  (form submit)            → saves a row, emails owner + parent
@@ -15,7 +15,7 @@
  */
 
 var OWNER_EMAIL = 'adam.miller.22@gmail.com';
-var SHEET_NAME  = 'Beach Field Day — Registrations';
+var SHEET_NAME  = 'Field Day Adventures — Registrations';
 var ADMIN_KEY   = 'L0ngport';   // password for the /admin page
 var CAPACITY    = 40;           // max kids per day
 var VENMO       = '@Adam-Miller-23';
@@ -74,7 +74,7 @@ function doGet(e) {
     return reply_(cb, { ok: true, capacity: CAPACITY, registrations: listAll_() });
   }
 
-  return reply_(cb, { ok: true, message: 'Beach Field Day registration endpoint is running.' });
+  return reply_(cb, { ok: true, message: 'Field Day Adventures registration endpoint is running.' });
 }
 
 // ── Sheet helpers ─────────────────────────────────────────────────────────────
@@ -175,7 +175,7 @@ function getSpreadsheet_() {
 function notifyOwner_(d) {
   var subject = 'New registration: ' + (d.childName || 'child') + ' — $' + (d.total || '0');
   var body =
-    'New Beach Field Day registration\n\n' +
+    'New Field Day Adventures registration\n\n' +
     'Child: ' + d.childName + ' (age ' + (d.childAge || 'n/a') + ')\n' +
     'Parent: ' + d.firstName + ' ' + d.lastName + '\n' +
     'Email: ' + d.email + '\n' +
@@ -193,10 +193,10 @@ function notifyOwner_(d) {
 
 function confirmParent_(d) {
   if (!d.email) return;
-  var subject = "You're registered for Beach Field Day! 🏖️";
+  var subject = "You're registered for Field Day Adventures! 🏖️";
   var body =
     'Hi ' + d.firstName + ',\n\n' +
-    'Thanks for registering ' + d.childName + ' for Beach Field Day!\n\n' +
+    'Thanks for registering ' + d.childName + ' for Field Day Adventures!\n\n' +
     'Days: ' + prettyDays_(d.days) + '\n' +
     (d.extendedDays ? 'Extended until 1pm on: ' + prettyDays_(d.extendedDays) + '\n' : '') +
     '\n' +
@@ -217,7 +217,7 @@ function confirmParent_(d) {
     'WHEN: drop-off 9am, pick-up Noon (1pm on extended days)\n\n' +
     'Questions? Just reply to this email or text ' + CONTACT + '.\n\n' +
     'See you on the sand!\n' +
-    'Beach Field Day';
+    'Field Day Adventures';
   MailApp.sendEmail(d.email, subject, body);
 }
 

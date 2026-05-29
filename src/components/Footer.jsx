@@ -4,11 +4,11 @@ export default function Footer() {
       <div className="mx-auto max-w-[1200px]">
         <img
           src="/logo.png"
-          alt="Beach Field Day logo"
+          alt="Field Day Adventures logo"
           className="mx-auto mb-4 h-28 w-28 rounded-full object-cover"
         />
         <div className="mb-3 font-display text-2xl font-black text-cream">
-          Beach Field Day
+          Field Day Adventures
         </div>
         <div className="mb-6 text-sm opacity-70">
           Longport, NJ · Saturdays &amp; Sundays · Summer 2026
@@ -23,7 +23,7 @@ export default function Footer() {
           </a>
         </div>
         <div className="border-t border-sand-light/15 pt-6 text-xs opacity-50">
-          © 2026 Beach Field Day. All rights reserved. Run with love by two PE teachers.
+          © 2026 Field Day Adventures. All rights reserved. Run with love by two PE teachers.
         </div>
       </div>
     </footer>

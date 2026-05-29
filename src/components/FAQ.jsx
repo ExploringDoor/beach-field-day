@@ -1,7 +1,7 @@
 const FAQS = [
   {
     q: 'Do you go in the ocean?',
-    a: 'No. Beach Field Day is a sand-and-court program only. We never take children into the ocean under any circumstances. All water games use sprinklers, water balloons, and similar gear — never the surf.',
+    a: 'No. Field Day Adventures is a sand-and-court program only. We never take children into the ocean under any circumstances. All water games use sprinklers, water balloons, and similar gear — never the surf.',
   },
   {
     q: 'What if it rains?',

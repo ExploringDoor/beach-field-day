@@ -1,5 +1,5 @@
 /**
- * Beach Field Day — registration form generator (Google Apps Script).
+ * Field Day Adventures — registration form generator (Google Apps Script).
  *
  * HOW TO RUN:
  *  1. Go to https://script.google.com  →  New project
@@ -25,7 +25,7 @@ var ZELLE_CONTACT = '(610) 804-9222';      // ← your Zelle phone number or ema
 var DAY_RATE      = 80;                     // $ per child, per day
 
 function createBeachFieldDayForm() {
-  var form = FormApp.create('Beach Field Day — Registration');
+  var form = FormApp.create('Field Day Adventures — Registration');
 
   form.setDescription(
     'Drop-off beach camp for kids ages 4–9 in Longport, NJ. Saturdays & Sundays, ' +
@@ -138,7 +138,7 @@ function createBeachFieldDayForm() {
   // ── LIABILITY WAIVER ─────────────────────────────────────────────────────────
   var waiver =
     'DISCLAIMER OF LIABILITY\n' +
-    'Beach Field Day and its staff do not assume liability for any injuries incurred ' +
+    'Field Day Adventures and its staff do not assume liability for any injuries incurred ' +
     'while at camp or on the way to camp. Parents or guardians should contact their own ' +
     'insurance carrier to obtain additional insurance for the camper, if necessary. As a ' +
     'condition of enrollment, the following release of liability must be agreed to by the ' +
@@ -146,12 +146,12 @@ function createBeachFieldDayForm() {
 
     'RELEASE OF LIABILITY\n' +
     'In consideration of the minor child/ward named in this registration being allowed to ' +
-    'participate in the Beach Field Day program, its related events and activities, I, the ' +
+    'participate in the Field Day Adventures program, its related events and activities, I, the ' +
     'parent/guardian:\n\n' +
 
     '1. Acknowledge, agree, and represent that I give permission for the minor to participate ' +
-    'in the Beach Field Day program. The minor is physically able and mentally prepared to ' +
-    'participate in all activities as described on the Beach Field Day website and registration ' +
+    'in the Field Day Adventures program. The minor is physically able and mentally prepared to ' +
+    'participate in all activities as described on the Field Day Adventures website and registration ' +
     'materials.\n\n' +
 
     '2. Affirm that the health history provided for the minor named in this registration is ' +
@@ -161,37 +161,37 @@ function createBeachFieldDayForm() {
     'necessary.\n\n' +
 
     '3. Understand that in the event the minor needs medical treatment and I am unable to be ' +
-    'reached, the staff of Beach Field Day may take reasonable action seeking appropriate care, ' +
-    'and I specifically authorize Beach Field Day to seek emergency medical care for the minor ' +
+    'reached, the staff of Field Day Adventures may take reasonable action seeking appropriate care, ' +
+    'and I specifically authorize Field Day Adventures to seek emergency medical care for the minor ' +
     'child as deemed necessary.\n\n' +
 
-    '4. Grant permission for Beach Field Day to record, print, photograph, film, and/or video ' +
-    'the minor while attending Beach Field Day activities. I understand this media may be used ' +
-    'for print advertising, the Beach Field Day website and social media accounts, and other ' +
-    'promotional materials for Beach Field Day.\n\n' +
+    '4. Grant permission for Field Day Adventures to record, print, photograph, film, and/or video ' +
+    'the minor while attending Field Day Adventures activities. I understand this media may be used ' +
+    'for print advertising, the Field Day Adventures website and social media accounts, and other ' +
+    'promotional materials for Field Day Adventures.\n\n' +
 
     '5. On behalf of myself (as parent or guardian), hereby release, indemnify, and hold ' +
-    'harmless Beach Field Day, its directors, officers, employees, and volunteers (collectively ' +
+    'harmless Field Day Adventures, its directors, officers, employees, and volunteers (collectively ' +
     '"Releasees") from any and all liability, claims, and demands for personal injury, sickness, ' +
     'or death, as well as property damage and expenses, of any nature whatsoever which may be ' +
     'incurred by the undersigned and the child-participant that occur while the child is ' +
     'participating in activities for the above-described program.\n\n' +
 
     '6. Agree that in the event of any dispute pertaining to any provision of this agreement, to ' +
-    'the services rendered by Beach Field Day, or in any way related to attendance at a Beach ' +
+    'the services rendered by Field Day Adventures, or in any way related to attendance at a Beach ' +
     'Field Day program — including any claim for personal injury or other loss, and including any ' +
-    'claim against Beach Field Day or any director, officer, owner, official, employee, or agent ' +
-    'of Beach Field Day — I hereby agree to submit to binding arbitration to resolve such ' +
+    'claim against Field Day Adventures or any director, officer, owner, official, employee, or agent ' +
+    'of Field Day Adventures — I hereby agree to submit to binding arbitration to resolve such ' +
     'disputes, by claim filed in New Jersey, to be arbitrated here or at such other venue as ' +
     'deemed appropriate by the arbitrator, such arbitration to proceed under the applicable ' +
     'Rules.\n\n' +
 
     'PARENT/GUARDIAN CONSENT\n' +
     'I am the parent or legal guardian of the registered minor and hereby give consent for my ' +
-    'child to participate in the Beach Field Day program. I affirm that I have the legal right to ' +
+    'child to participate in the Field Day Adventures program. I affirm that I have the legal right to ' +
     'issue such consent. I further affirm that I have read this Release of Liability, fully ' +
     'understand its terms, and understand that I have given up substantial rights by agreeing to ' +
-    'it and registering for a Beach Field Day program, and that I do so freely and voluntarily ' +
+    'it and registering for a Field Day Adventures program, and that I do so freely and voluntarily ' +
     'without any inducement.';
 
   form.addSectionHeaderItem()

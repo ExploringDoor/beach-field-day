@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// Central config for Beach Field Day.
+// Central config for Field Day Adventures.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Paste the Apps Script Web App URL here after you deploy scripts/registration-endpoint.gs

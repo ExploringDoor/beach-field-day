@@ -29,7 +29,7 @@ export default function Hero() {
         {/* Mobile / tablet: logo sits in-flow above the headline (no overlap) */}
         <img
           src="/logo.png"
-          alt="Beach Field Day logo"
+          alt="Field Day Adventures logo"
           className="mx-auto mb-6 h-40 w-40 animate-float rounded-full object-cover drop-shadow-xl sm:h-48 sm:w-48 lg:hidden"
         />
         <span

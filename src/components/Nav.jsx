@@ -15,10 +15,10 @@ export default function Nav() {
         <a href="#" className="flex items-center gap-2.5 font-display text-[22px] font-black tracking-tight text-ocean-deep">
           <img
             src="/logo.png"
-            alt="Beach Field Day logo"
+            alt="Field Day Adventures logo"
             className="h-11 w-11 rounded-full object-cover"
           />
-          Beach Field Day
+          Field Day Adventures
         </a>
         <div className="hidden gap-8 text-[15px] font-medium md:flex">
           <a href="#activities" className="text-ink-soft transition-colors hover:text-ocean-deep">Activities</a>
