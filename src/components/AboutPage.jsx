@@ -11,13 +11,13 @@ const TEAM = [
     name: 'Adam Miller', // <- confirm your name
     role: 'Co-Founder & Lead Coach',
     photo: '', // e.g. '/coach-adam.jpg'
-    creds: ['Certified Health & PE Teacher', 'CPR & First Aid Certified'],
-    bio: 'Adam is a certified Health & Physical Education teacher who spends the school year doing exactly what he loves — getting kids moving, laughing, and trying new things. He started Field Day Adventures to bring that same energy to summer mornings on the beach: no screens, no standing around, just games, sports, and the kind of all-out fun that sends kids home happily worn out. He runs every session with a teacher\'s eye for safety and a coach\'s love for the game.',
+    creds: ['Master\'s in Education', '15+ Years Teaching K–8', 'HS Basketball Coach', 'CPR & First Aid Certified'],
+    bio: 'Adam holds a Master\'s in Education and has spent over 15 years teaching K–8. He coaches high school basketball at Lower Merion High School and teaches in the Lower Merion School District — bringing all that experience and a ton of energy to every morning on the beach. A dad to two, Adam started Field Day Adventures to give local kids the kind of active, screen-free, all-out-fun summer mornings he\'d want for his own: no sitting around, just games, sports, and happily worn-out kids.',
   },
   {
-    name: 'Martin Sullivan',
+    name: 'Marty Sullivan',
     role: 'Lead Coach',
-    photo: '', // e.g. '/coach-martin.jpg'
+    photo: '', // e.g. '/coach-marty.jpg'
     creds: ['M.Ed. Health & Physical Education', '10+ Years Teaching K–8', 'School Athletic Director', 'CPR & First Aid Certified'],
     bio: 'Martin holds a Master\'s degree in Health & Physical Education and has been teaching K–8 for over a decade. As his school\'s Athletic Director, he coaches football, basketball, and volleyball — and he brings that same energy, structure, and team spirit to the beach every session. Most importantly, Martin\'s a dad to a little girl, so he knows exactly what parents want: a safe, active, genuinely fun morning where every kid feels included and leaves smiling.',
   },
