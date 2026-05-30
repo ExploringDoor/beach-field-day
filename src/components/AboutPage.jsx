@@ -8,18 +8,18 @@ import Footer from './Footer.jsx'
 // Leave photo as '' to show initials instead.
 const TEAM = [
   {
-    name: 'Adam Miller', // <- your name
+    name: 'Adam Miller', // <- confirm your name
     role: 'Co-Founder & Lead Coach',
     photo: '', // e.g. '/coach-adam.jpg'
     creds: ['Certified Health & PE Teacher', 'CPR & First Aid Certified'],
-    bio: 'EDIT ME: A few sentences about you — years teaching, what you love about working with kids, why you started Field Day Adventures, and what families can expect from your mornings on the beach.',
+    bio: 'Adam is a certified Health & Physical Education teacher who spends the school year doing exactly what he loves — getting kids moving, laughing, and trying new things. He started Field Day Adventures to bring that same energy to summer mornings on the beach: no screens, no standing around, just games, sports, and the kind of all-out fun that sends kids home happily worn out. He runs every session with a teacher\'s eye for safety and a coach\'s love for the game.',
   },
   {
-    name: 'Partner Name', // <- your partner's name
+    name: 'Coach', // <- add your partner's name
     role: 'Coach',
     photo: '',
     creds: ['Certified Health & PE Teacher', 'CPR & First Aid Certified'],
-    bio: 'EDIT ME: A few sentences about your partner — background, coaching style, and what kids love about them.',
+    bio: 'A certified Health & Physical Education teacher with a gift for making every kid feel like part of the team. Whether it\'s leading an obstacle course, refereeing a tug-of-war, or cheering on a nervous first-timer, they bring patience, energy, and a whole lot of fun to the sand — and make sure every camper has a safe, active, smile-filled morning.',
   },
 ]
 
