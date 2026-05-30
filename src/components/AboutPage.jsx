@@ -11,15 +11,15 @@ const TEAM = [
     name: 'Adam Miller', // <- confirm your name
     role: 'Lead Coach',
     photo: '', // e.g. '/coach-adam.jpg'
-    creds: ['Master\'s in Education', '15+ Years Teaching K–8', 'HS Basketball Coach', 'CPR & First Aid Certified'],
-    bio: 'Adam holds a Master\'s in Education and has spent over 15 years teaching K–8. He coaches high school basketball at Lower Merion High School and teaches in the Lower Merion School District. Having grown up coming down the shore every summer, building a camp on the sand he loves was a natural fit. A dad to two, Adam created Field Day Adventures to give local kids the kind of active, screen-free, all-out-fun summer mornings he remembers best — no sitting around, just games, sports, and happily worn-out kids.',
+    creds: ['M.Ed. Health & Physical Education', '15+ Years Teaching K–8', 'HS Basketball Coach', 'CPR & First Aid Certified'],
+    bio: 'Adam holds a Master\'s in Health & Physical Education and has spent over 15 years teaching K–8. He coaches high school basketball at Lower Merion High School and teaches in the Lower Merion School District. Having grown up coming down the shore every summer, building a camp on the sand he loves was a natural fit. A dad to two, Adam created Field Day Adventures to give local kids the kind of active, screen-free, all-out-fun summer mornings he remembers best — no sitting around, just games, sports, and happily worn-out kids.',
   },
   {
     name: 'Marty Sullivan',
     role: 'Lead Coach',
     photo: '', // e.g. '/coach-marty.jpg'
-    creds: ['M.Ed. Health & Physical Education', '10+ Years Teaching K–8', 'School Athletic Director', 'CPR & First Aid Certified'],
-    bio: 'Martin holds a Master\'s degree in Health & Physical Education and has been teaching K–8 for over a decade. As his school\'s Athletic Director, he coaches football, basketball, and volleyball — and he brings that same energy, structure, and team spirit to the beach every session. Most importantly, Martin\'s a dad to a little girl, so he knows exactly what parents want: a safe, active, genuinely fun morning where every kid feels included and leaves smiling.',
+    creds: ['M.Ed. Health & Physical Education', '10+ Years Teaching K–8', 'CPR & First Aid Certified'],
+    bio: 'Marty holds a Master\'s degree in Health & Physical Education and has been teaching K–8 for over a decade. He coaches football, basketball, and volleyball, and brings that same energy, structure, and team spirit to the beach every session. Most importantly, Marty\'s a dad to a little girl, so he knows exactly what parents want: a safe, active, genuinely fun morning where every kid feels included and leaves smiling.',
   },
 ]
 
