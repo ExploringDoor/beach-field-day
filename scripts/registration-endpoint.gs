@@ -195,7 +195,7 @@ function adminUpdate(key, id, patch) {
   Object.keys(patch).forEach(function (h) {
     var c = header.indexOf(h);
     if (c < 0) {
-      // Column doesn't exist yet (e.g. "Credit" added later) — create it on the fly.
+      // Column doesn't exist yet (e.g. "Credit" added later) - create it on the fly.
       c = header.length;
       sheet.getRange(1, c + 1).setValue(h).setFontWeight('bold');
       header.push(h);
