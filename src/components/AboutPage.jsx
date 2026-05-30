@@ -15,11 +15,11 @@ const TEAM = [
     bio: 'Adam is a certified Health & Physical Education teacher who spends the school year doing exactly what he loves — getting kids moving, laughing, and trying new things. He started Field Day Adventures to bring that same energy to summer mornings on the beach: no screens, no standing around, just games, sports, and the kind of all-out fun that sends kids home happily worn out. He runs every session with a teacher\'s eye for safety and a coach\'s love for the game.',
   },
   {
-    name: 'Coach', // <- add your partner's name
-    role: 'Coach',
-    photo: '',
-    creds: ['Certified Health & PE Teacher', 'CPR & First Aid Certified'],
-    bio: 'A certified Health & Physical Education teacher with a gift for making every kid feel like part of the team. Whether it\'s leading an obstacle course, refereeing a tug-of-war, or cheering on a nervous first-timer, they bring patience, energy, and a whole lot of fun to the sand — and make sure every camper has a safe, active, smile-filled morning.',
+    name: 'Martin Sullivan',
+    role: 'Lead Coach',
+    photo: '', // e.g. '/coach-martin.jpg'
+    creds: ['M.Ed. Health & Physical Education', '10+ Years Teaching K–8', 'School Athletic Director', 'CPR & First Aid Certified'],
+    bio: 'Martin holds a Master\'s degree in Health & Physical Education and has been teaching K–8 for over a decade. As his school\'s Athletic Director, he coaches football, basketball, and volleyball — and he brings that same energy, structure, and team spirit to the beach every session. Most importantly, Martin\'s a dad to a little girl, so he knows exactly what parents want: a safe, active, genuinely fun morning where every kid feels included and leaves smiling.',
   },
 ]
 
