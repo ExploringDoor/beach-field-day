@@ -343,6 +343,14 @@ export default function RegisterPage() {
               />
               {errors.paymentAck && <ErrorText>{errors.paymentAck}</ErrorText>}
             </div>
+            <div className="mt-4 rounded-xl border border-ocean/15 bg-cream p-4 text-[13px] leading-relaxed text-ink-soft">
+              <p className="font-bold text-ocean-deep">Cancellation &amp; refund policy</p>
+              <p className="mt-1">
+                Cancel 7+ days before a session for a full refund · 2–6 days before for a credit toward another day ·
+                within 48 hours or no-show is non-refundable. Sick child? Tell us before the session and we'll credit
+                you. If we cancel for weather, your session is rescheduled at no cost.
+              </p>
+            </div>
           </Section>
 
           {/* WAIVER */}

@@ -38,6 +38,16 @@ const BLOCKS = [
       'Sign-in / sign-out procedure with ID check for every drop-off',
     ],
   },
+  {
+    title: '✓ Cancellation & refunds',
+    items: [
+      'Cancel 7+ days before a session for a full refund',
+      'Cancel 2–6 days before for a credit toward any other day this summer',
+      'Within 48 hours or no-show: non-refundable (the spot was held)',
+      'Sick child? Let us know before the session and we\'ll credit you toward another day',
+      'If we cancel for weather, the session is rescheduled at no cost',
+    ],
+  },
 ]
 
 export default function ParentInfo() {

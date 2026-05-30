@@ -32,6 +32,10 @@ const FAQS = [
     a: 'Register through our online form, then send payment via Venmo or Zelle — the payment details are shown right on the form and on the confirmation screen. Your child\'s spot is not confirmed until payment is received.',
   },
   {
+    q: 'What is your cancellation & refund policy?',
+    a: 'Cancel 7 or more days before a session for a full refund. Cancel 2–6 days before and we\'ll give you a credit toward any other day this summer. Cancellations within 48 hours of a session, or no-shows, are non-refundable (the spot was held for your child). If your child is sick, just let us know before the session and we\'ll credit you toward another day. If we ever cancel a session for weather, it\'s rescheduled at no cost.',
+  },
+  {
     q: 'What days do you run?',
     a: 'Saturdays & Sundays from June 27 through August 30, plus Mondays & Fridays from June 29 through August 21. All sessions are 9am–Noon (or until 1pm with the extended-stay add-on). Sign up for any single day or any combination.',
   },
