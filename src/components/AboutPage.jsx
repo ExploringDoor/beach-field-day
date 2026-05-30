@@ -9,10 +9,10 @@ import Footer from './Footer.jsx'
 const TEAM = [
   {
     name: 'Adam Miller', // <- confirm your name
-    role: 'Co-Founder & Lead Coach',
+    role: 'Lead Coach',
     photo: '', // e.g. '/coach-adam.jpg'
     creds: ['Master\'s in Education', '15+ Years Teaching K–8', 'HS Basketball Coach', 'CPR & First Aid Certified'],
-    bio: 'Adam holds a Master\'s in Education and has spent over 15 years teaching K–8. He coaches high school basketball at Lower Merion High School and teaches in the Lower Merion School District — bringing all that experience and a ton of energy to every morning on the beach. A dad to two, Adam started Field Day Adventures to give local kids the kind of active, screen-free, all-out-fun summer mornings he\'d want for his own: no sitting around, just games, sports, and happily worn-out kids.',
+    bio: 'Adam holds a Master\'s in Education and has spent over 15 years teaching K–8. He coaches high school basketball at Lower Merion High School and teaches in the Lower Merion School District. Having grown up coming down the shore every summer, building a camp on the sand he loves was a natural fit. A dad to two, Adam created Field Day Adventures to give local kids the kind of active, screen-free, all-out-fun summer mornings he remembers best — no sitting around, just games, sports, and happily worn-out kids.',
   },
   {
     name: 'Marty Sullivan',
