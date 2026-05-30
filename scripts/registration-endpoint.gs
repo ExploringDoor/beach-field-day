@@ -56,6 +56,7 @@ var FIELDS = [
   ['signature',    'Signature'],
 ];
 var PAID_HEADER = 'Paid?';
+var CREDIT_HEADER = 'Credit';
 
 // -- ROUTING -------------------------------------------------------------------
 function doPost(e) {
@@ -89,12 +90,14 @@ function saveRow_(data) {
   if (sheet.getLastRow() === 0) {
     var headers = FIELDS.map(function (f) { return f[1]; });
     headers.push(PAID_HEADER);
+    headers.push(CREDIT_HEADER);
     sheet.appendRow(headers);
     sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
   }
   var row = FIELDS.map(function (f) { return data[f[0]] !== undefined ? data[f[0]] : ''; });
-  row.push('');
+  row.push(''); // Paid?
+  row.push(''); // Credit
   sheet.appendRow(row);
 
   // Keep date/phone columns as plain text (no Sheets auto-coercion).
@@ -191,11 +194,15 @@ function adminUpdate(key, id, patch) {
   var header = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
   Object.keys(patch).forEach(function (h) {
     var c = header.indexOf(h);
-    if (c >= 0) {
-      var cell = sheet.getRange(rowNum, c + 1);
-      if (h === 'Days Requested' || h === 'Extended Days' || h === 'Phone') cell.setNumberFormat('@');
-      cell.setValue(patch[h]);
+    if (c < 0) {
+      // Column doesn't exist yet (e.g. "Credit" added later) — create it on the fly.
+      c = header.length;
+      sheet.getRange(1, c + 1).setValue(h).setFontWeight('bold');
+      header.push(h);
     }
+    var cell = sheet.getRange(rowNum, c + 1);
+    if (h === 'Days Requested' || h === 'Extended Days' || h === 'Phone') cell.setNumberFormat('@');
+    cell.setValue(patch[h]);
   });
   return { ok: true };
 }
@@ -352,6 +359,7 @@ function adminHtml_() {
   .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;}
   .pill.paid{background:#dff3e4;color:#1e7a43;}
   .pill.no{background:#fde2d6;color:var(--sunset-deep);}
+  .pill.credit{background:#e7eef5;color:var(--ocean-deep);}
   .allergy{color:#c0392b;font-weight:600;}
   .allergy-none{color:#9aa3aa;}
   .muted{color:var(--ink-soft);}
@@ -481,10 +489,11 @@ function adminHtml_() {
       if(!q)return true;
       return [r['Child Name'],r['Parent First'],r['Parent Last'],r['Email'],r['Phone']].join(' ').toLowerCase().indexOf(q)>=0;
     });
-    var h='<tr><th>Child</th><th>Age</th><th>Parent</th><th>Phone</th><th>Days</th><th>1pm</th><th>$</th><th>Pay</th><th>Paid</th><th>Allergies</th><th></th></tr>';
+    var h='<tr><th>Child</th><th>Age</th><th>Parent</th><th>Phone</th><th>Days</th><th>1pm</th><th>$</th><th>Pay</th><th>Paid</th><th>Credit</th><th>Allergies</th><th></th></tr>';
     rows.forEach(function(r){
       var al=String(r['Allergies / Restrictions']||'').trim();
       var alClass=(al&&al.toLowerCase()!=='none')?'allergy':'allergy-none';
+      var credit=String(r['Credit']||'').trim();
       h+='<tr class="'+(isPaid(r)?'':'unpaid')+'">'
         +'<td><b>'+esc(r['Child Name'])+'</b></td><td>'+esc(r['Child Age'])+'</td>'
         +'<td>'+esc(r['Parent First'])+' '+esc(r['Parent Last'])+'<div class="muted">'+esc(r['Email'])+'</div></td>'
@@ -493,9 +502,11 @@ function adminHtml_() {
         +'<td>'+esc(pretty(r['Extended Days'])||'-')+'</td>'
         +'<td>$'+esc(r['Total $'])+'</td><td>'+esc(r['Pay Method'])+'</td>'
         +'<td>'+(isPaid(r)?'<span class="pill paid">'+esc(r['Paid?'])+'</span>':'<span class="pill no">unpaid</span>')+'</td>'
+        +'<td>'+(credit?'<span class="pill credit">'+esc(credit)+'</span>':'<span class="muted">-</span>')+'</td>'
         +'<td class="'+alClass+'">'+esc(al||'None')+'</td>'
         +'<td style="white-space:nowrap">'
           +'<button class="btn-sm '+(isPaid(r)?'btn-ghost':'btn')+'" onclick="togglePaid(\\''+r['ID']+'\\')">'+(isPaid(r)?'Unpay':'Mark paid')+'</button> '
+          +'<button class="btn-sm btn-ghost" onclick="setCredit(\\''+r['ID']+'\\')">Credit</button> '
           +'<button class="btn-sm btn-ghost" onclick="openEdit(\\''+r['ID']+'\\')">Edit</button> '
           +'<button class="btn-sm btn-danger" onclick="cancelReg(\\''+r['ID']+'\\')">Cancel</button>'
         +'</td></tr>';
@@ -574,6 +585,14 @@ function adminHtml_() {
     var r=byId(id);if(!r)return;
     var val=isPaid(r)?'':('Paid '+new Date().toLocaleDateString());
     call('adminSetPaid',[KEY,id,val]).then(function(){r['Paid?']=val;render();});
+  }
+
+  function setCredit(id){
+    var r=byId(id);if(!r)return;
+    var cur=String(r['Credit']||'');
+    var val=prompt('Credit for '+r['Child Name']+' (e.g. "$100 - 1 day" or "Credit Jul 4"). Leave blank to clear:',cur);
+    if(val===null)return; // cancelled
+    call('adminUpdate',[KEY,id,{'Credit':val}]).then(function(){r['Credit']=val;render();});
   }
 
   function cancelReg(id){
