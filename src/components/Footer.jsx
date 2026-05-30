@@ -23,7 +23,7 @@ export default function Footer() {
           </a>
         </div>
         <div className="border-t border-sand-light/15 pt-6 text-xs opacity-50">
-          © 2026 Field Day Adventures. All rights reserved. Run with love by two PE teachers.
+          © 2026 Field Day Adventures LLC. All rights reserved. Run with love by two PE teachers.
         </div>
       </div>
     </footer>
