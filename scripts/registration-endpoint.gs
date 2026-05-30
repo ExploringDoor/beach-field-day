@@ -474,8 +474,10 @@ function adminHtml_() {
 
   function renderStats(){
     var total=DATA.length, paid=DATA.filter(isPaid).length, rev=DATA.reduce(function(s,r){return s+(Number(r['Total $'])||0);},0);
-    document.getElementById('stats').innerHTML=
-      stat(total,'Registrations')+stat(paid+' / '+total,'Paid')+stat(total-paid,'Awaiting pay')+stat('$'+rev,'Expected');
+    var credits=DATA.filter(function(r){return String(r['Credit']||'').trim();}).length;
+    var html=stat(total,'Registrations')+stat(paid+' / '+total,'Paid')+stat(total-paid,'Awaiting pay')+stat('$'+rev,'Expected');
+    if(credits>0) html+=stat(credits,'Open credits');
+    document.getElementById('stats').innerHTML=html;
   }
   function stat(v,l){return '<div class="stat"><b>'+v+'</b><span>'+l+'</span></div>';}
   function isPaid(r){return String(r['Paid?']||'').trim()!=='';}

@@ -24,7 +24,7 @@ export default function Nav() {
           <a href="#activities" className="text-ink-soft transition-colors hover:text-ocean-deep">Activities</a>
           <a href="#our-spot" className="text-ink-soft transition-colors hover:text-ocean-deep">Our Spot</a>
           <a href="#pricing" className="text-ink-soft transition-colors hover:text-ocean-deep">Schedule</a>
-          <a href="#info" className="text-ink-soft transition-colors hover:text-ocean-deep">Parent Info</a>
+          <Link to="/about" className="text-ink-soft transition-colors hover:text-ocean-deep">Meet the Team</Link>
           <a href="#faq" className="text-ink-soft transition-colors hover:text-ocean-deep">FAQ</a>
         </div>
         <Link
