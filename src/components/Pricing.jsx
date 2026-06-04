@@ -31,12 +31,21 @@ export default function Pricing() {
             $100
           </div>
           <div className="relative z-10 mb-8 text-[18px] text-ink-soft">
-            No bundles. No memberships. Just show up.
+            Sign up for one day or the whole summer.
           </div>
           <div className="relative z-10 my-8 grid gap-4 sm:grid-cols-3">
             <Chip top="Days" bottom="Mon/Fri/Sat/Sun" />
             <Chip top="Time" bottom="9am – Noon" />
             <Chip top="Location" bottom="Longport, NJ" />
+          </div>
+          <div className="relative z-10 mb-8 rounded-2xl border border-ocean/20 bg-cream/70 p-5 text-left">
+            <div className="mb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-ocean">
+              Multi-day discount
+            </div>
+            <div className="font-display text-[18px] font-bold text-ocean-deep">
+              5+ days → <span className="text-ocean">$90/day</span> · 10+ days → <span className="text-ocean">$85/day</span>
+            </div>
+            <p className="mt-1 text-[14px] text-ink-soft">The more days you book, the more you save.</p>
           </div>
           <div
             className="relative z-10 mb-8 rounded-2xl border border-sunset/30 bg-cream/70 p-5 text-left"

@@ -16,6 +16,17 @@ export const CONTACT_EMAIL = 'hello@fielddayadventures.com'
 export const DAY_RATE = 100
 export const EXTENDED_RATE = 35
 
+// Multi-session discount: per-day rate based on how many days are booked.
+//   1–4 days  → $100/day
+//   5–9 days  → $90/day
+//   10+ days  → $85/day
+// (Extended-stay add-on stays a flat $35/day regardless of discount.)
+export function dayRateFor(numDays) {
+  if (numDays >= 10) return 85
+  if (numDays >= 5) return 90
+  return DAY_RATE
+}
+
 // Max kids per day. When a date reaches this, it shows as "Full".
 export const CAPACITY = 40
 

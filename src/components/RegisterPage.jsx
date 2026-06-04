@@ -10,6 +10,7 @@ import {
   CAPACITY,
   DAY_SEP,
   sessionDates,
+  dayRateFor,
 } from '../config.js'
 import { jsonp } from '../jsonp.js'
 
@@ -72,10 +73,12 @@ export default function RegisterPage() {
     return () => { alive = false }
   }, [])
 
-  // Keep the live total in sync.
+  // Keep the live total in sync (applies the multi-session discount).
+  const perDayRate = dayRateFor(form.days.length)
+  const savings = form.days.length * (DAY_RATE - perDayRate)
   useEffect(() => {
-    setTotal(form.days.length * DAY_RATE + form.extendedDays.length * EXTENDED_RATE)
-  }, [form.days, form.extendedDays])
+    setTotal(form.days.length * perDayRate + form.extendedDays.length * EXTENDED_RATE)
+  }, [form.days, form.extendedDays, perDayRate])
 
   function set(field, value) {
     setForm((f) => ({ ...f, [field]: value }))
@@ -183,8 +186,8 @@ export default function RegisterPage() {
             Sign up for <em className="font-display italic font-semibold text-sunset-deep">Field Day Adventures</em>
           </h1>
           <p className="mx-auto mt-3 max-w-[520px] text-[16px] text-ink-soft">
-            ${DAY_RATE} per child, per day (+${EXTENDED_RATE}/day to stay until 1pm). One form per child —
-            you can register another child afterward.
+            ${DAY_RATE}/day (+${EXTENDED_RATE}/day to stay until 1pm) — drop to $90/day at 5+ days, $85/day at 10+.
+            One form per child; you can register another child afterward.
           </p>
         </div>
 
@@ -306,11 +309,24 @@ export default function RegisterPage() {
           <div className="rounded-3xl bg-ocean-deep p-6 text-cream sm:p-8">
             <p className="font-display text-[20px] font-bold">Your total</p>
             <div className="mt-3 space-y-1 text-[15px] text-sand-light">
-              <Line label={`${form.days.length} day${form.days.length === 1 ? '' : 's'} × $${DAY_RATE}`} value={form.days.length * DAY_RATE} />
+              <Line
+                label={`${form.days.length} day${form.days.length === 1 ? '' : 's'} × $${perDayRate}${perDayRate < DAY_RATE ? ' (discount!)' : ''}`}
+                value={form.days.length * perDayRate}
+              />
               {form.extendedDays.length > 0 && (
                 <Line label={`${form.extendedDays.length} extended × $${EXTENDED_RATE}`} value={form.extendedDays.length * EXTENDED_RATE} />
               )}
             </div>
+            {savings > 0 && (
+              <p className="mt-2 rounded-lg bg-coral/20 px-3 py-2 text-[14px] font-semibold text-coral">
+                🎉 You're saving ${savings} with the multi-day discount!
+              </p>
+            )}
+            {savings === 0 && form.days.length > 0 && form.days.length < 5 && (
+              <p className="mt-2 text-[13px] text-sand-light/80">
+                Add {5 - form.days.length} more day{5 - form.days.length === 1 ? '' : 's'} to drop to $90/day.
+              </p>
+            )}
             <div className="mt-3 flex items-end justify-between border-t border-cream/20 pt-3">
               <span className="text-[15px] font-medium text-sand-light">Total to send</span>
               <span className="font-display text-[34px] font-black leading-none text-coral">${total}</span>
