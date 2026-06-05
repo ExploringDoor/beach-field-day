@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import App from './App.jsx'
 import RegisterPage from './components/RegisterPage.jsx'
 import AdminPage from './components/AdminPage.jsx'
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/about" element={<AboutPage />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>
+      <Analytics />
     </BrowserRouter>
   </React.StrictMode>,
 )
