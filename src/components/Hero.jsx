@@ -51,7 +51,7 @@ export default function Hero() {
         <div className="flex max-w-[700px] flex-wrap gap-8 border-t border-ink/15 pt-8">
           <HeroInfo label="When" value="Mon, Fri, Sat, Sun · 9–Noon" />
           <HeroInfo label="Ages" value="4 to 9" />
-          <HeroInfo label="Price" value="$100 / day" />
+          <HeroInfo label="Price" value="$100/day · less for more" />
         </div>
       </div>
     </section>

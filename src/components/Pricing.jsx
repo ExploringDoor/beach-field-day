@@ -27,25 +27,18 @@ export default function Pricing() {
             style={{ background: '#2B6B8C' }}
           />
           <span className="section-eyebrow">Per child, per day</span>
-          <div className="relative z-10 my-2 font-display text-[88px] font-black leading-none text-ocean-deep">
-            $100
-          </div>
-          <div className="relative z-10 mb-8 text-[18px] text-ink-soft">
-            Sign up for one day or the whole summer.
+          <p className="relative z-10 mb-5 text-[18px] font-semibold text-ink-soft">
+            The more days you book, the more you save.
+          </p>
+          <div className="relative z-10 mb-8 grid grid-cols-3 gap-3">
+            <Tier range="1–4 days" price="100" />
+            <Tier range="5–9 days" price="90" highlight />
+            <Tier range="10+ days" price="85" highlight badge="Best value" />
           </div>
           <div className="relative z-10 my-8 grid gap-4 sm:grid-cols-3">
             <Chip top="Days" bottom="Mon/Fri/Sat/Sun" />
             <Chip top="Time" bottom="9am – Noon" />
             <Chip top="Location" bottom="Longport, NJ" />
-          </div>
-          <div className="relative z-10 mb-8 rounded-2xl border border-ocean/20 bg-cream/70 p-5 text-left">
-            <div className="mb-1 text-[11px] font-bold uppercase tracking-[0.08em] text-ocean">
-              Multi-day discount
-            </div>
-            <div className="font-display text-[18px] font-bold text-ocean-deep">
-              5+ days → <span className="text-ocean">$90/day</span> · 10+ days → <span className="text-ocean">$85/day</span>
-            </div>
-            <p className="mt-1 text-[14px] text-ink-soft">The more days you book, the more you save.</p>
           </div>
           <div
             className="relative z-10 mb-8 rounded-2xl border border-sunset/30 bg-cream/70 p-5 text-left"
@@ -64,6 +57,28 @@ export default function Pricing() {
         </div>
       </div>
     </section>
+  )
+}
+
+function Tier({ range, price, highlight, badge }) {
+  return (
+    <div
+      className={
+        'relative rounded-2xl border-2 px-2 py-4 text-center ' +
+        (highlight ? 'border-sunset bg-sunset/10' : 'border-ocean/15 bg-cream/70')
+      }
+    >
+      {badge && (
+        <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-sunset px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-cream">
+          {badge}
+        </span>
+      )}
+      <div className="font-display text-[clamp(28px,7vw,40px)] font-black leading-none text-ocean-deep">
+        ${price}
+      </div>
+      <div className="mt-1 text-[11px] font-semibold text-ink-soft">/day</div>
+      <div className="mt-2 text-[12px] font-bold text-sunset-deep">{range}</div>
+    </div>
   )
 }
 
