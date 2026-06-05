@@ -5,9 +5,9 @@ const AMENITIES = [
     desc: 'For shooting games, knockout, and pickup hoops when it gets too hot for sand.',
   },
   {
-    icon: '🌳',
-    title: 'Grass field next door',
-    desc: 'Right next to the courts — perfect for field-day games that don\'t work on sand.',
+    icon: '🏖️',
+    title: 'Wide-open beach',
+    desc: 'Tons of open sand right there for sports, games, obstacle courses, and field-day fun.',
   },
   {
     icon: '⛱️',
@@ -31,20 +31,20 @@ export default function OurSpot() {
             More than just <em>sand</em>.
           </h2>
           <p className="section-lede mx-auto text-center">
-            We're not just a generic "we'll be at the beach" program. Our home base has courts, grass, shade, and a bathroom — everything we need to run a real day of activities, whether it's blazing hot or breezy and cool.
+            We're not just a generic "we'll be at the beach" program. Our home base has open sand, basketball courts, shade, and a bathroom — everything we need to run a real day of activities, whether it's blazing hot or breezy and cool.
           </p>
         </div>
 
         <figure className="reveal mb-14 overflow-hidden rounded-[24px] border border-ocean/10 shadow-[0_20px_40px_rgba(43,107,140,0.18)]">
           <img
             src="/fieldandbasketballcourts.jpg"
-            alt="Aerial view of the Longport basketball courts, grass field, gazebo, and beach at 35th and Atlantic"
+            alt="Aerial view of the Longport basketball courts, gazebo, and beach at 35th and Atlantic"
             className="block w-full"
             loading="lazy"
           />
           <figcaption className="bg-ocean-deep px-6 py-4 text-center text-[14px] font-medium text-sand-light">
             <span className="font-display text-[16px] font-bold text-cream">35th &amp; Atlantic, Longport, NJ</span>
-            <span className="opacity-70"> — gazebo, grass field, basketball courts, and the beach right behind it.</span>
+            <span className="opacity-70"> — gazebo, basketball courts, and the beach right behind it.</span>
           </figcaption>
         </figure>
 
@@ -71,7 +71,7 @@ export default function OurSpot() {
           ))}
         </div>
         <p className="mx-auto mt-12 max-w-[640px] text-center text-[15px] italic text-ink-soft">
-          Sun too strong? We move to the gazebo. Sand too hot? We hit the courts or grass. We've got real options — not just a towel and a prayer.
+          Sun too strong? We move to the gazebo. Sand too hot? We hit the courts. We've got real options — not just a towel and a prayer.
         </p>
       </div>
     </section>

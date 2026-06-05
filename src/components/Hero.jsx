@@ -42,7 +42,7 @@ export default function Hero() {
           The best mornings of your kid's <em className="font-display italic font-semibold text-sunset-deep">summer</em>.
         </h1>
         <p className="mb-9 max-w-[580px] text-[clamp(18px,2.2vw,22px)] font-medium text-ink">
-          A drop-off beach camp for ages 4–9, run by two certified PE teachers. Sports, games, arts &amp; crafts, water games, and full-on field-day energy — on the sand, on the basketball courts, and on the field.
+          A drop-off beach camp for ages 4–9, run by two certified PE teachers. Sports, games, arts &amp; crafts, water games, and full-on field-day energy — on the sand and on the basketball courts.
         </p>
         <div className="mb-12 flex flex-wrap gap-4">
           <Link to={REGISTER_URL} className="btn-primary">Register Your Child →</Link>
