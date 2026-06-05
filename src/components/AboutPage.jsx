@@ -17,7 +17,7 @@ const TEAM = [
   {
     name: 'Marty Sullivan',
     role: 'Lead Coach',
-    photo: '/coach-marty.jpg',
+    photo: '/coach-marty-v2.jpg',
     creds: ['M.Ed. Health & Physical Education', '10+ Years Teaching K–8', 'CPR & First Aid Certified'],
     bio: 'Marty holds a Master\'s degree in Health & Physical Education and has been teaching K–8 for over a decade. As an Athletic Director who coaches football, basketball, and volleyball, he brings that same energy, structure, and team spirit to the beach every session. Most importantly, Marty\'s a dad to a little girl, so he knows exactly what parents want: a safe, active, genuinely fun morning where every kid feels included and leaves smiling.',
   },
