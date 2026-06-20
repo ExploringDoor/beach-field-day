@@ -374,6 +374,16 @@ function adminHtml_() {
   .modal label{display:block;font-size:12px;font-weight:700;color:var(--ocean-deep);margin-top:10px;}
   .modal input,.modal textarea{width:100%;padding:8px;border:1.5px solid #d8cfb4;border-radius:8px;font-size:14px;margin-top:3px;}
   .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+  /* day picker */
+  .daypick{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:46vh;overflow:auto;margin:10px 0;padding:2px;}
+  .dp{border:1.5px solid #e3dcc8;border-radius:9px;overflow:hidden;}
+  .dp.on{border-color:var(--sunset);}
+  .dp .dpd{display:block;width:100%;text-align:left;background:#fff;border:none;font:inherit;padding:9px 10px;cursor:pointer;color:var(--ink);border-radius:0;}
+  .dp.on .dpd{background:#fdebcf;color:var(--ocean-deep);font-weight:700;}
+  .dp .dpx{display:block;width:100%;text-align:left;background:#f1f5f8;border:none;border-top:1px solid #e3dcc8;font:inherit;font-size:12px;padding:6px 10px;cursor:pointer;color:var(--ink-soft);border-radius:0;}
+  .dp .dpx.exon{background:#e7eef5;color:var(--ocean-deep);font-weight:700;}
+  .dptotal{background:var(--ocean-deep);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;margin-top:6px;}
+  .dptotal b{color:var(--coral);font-size:19px;}
   /* calendar */
   .cal{background:#fff;border:1px solid #e3dcc8;border-radius:12px;padding:14px;margin-bottom:14px;}
   .cal h3{color:var(--ocean-deep);margin-bottom:8px;}
@@ -508,6 +518,7 @@ function adminHtml_() {
         +'<td class="'+alClass+'">'+esc(al||'None')+'</td>'
         +'<td style="white-space:nowrap">'
           +'<button class="btn-sm '+(isPaid(r)?'btn-ghost':'btn')+'" onclick="togglePaid(\\''+r['ID']+'\\')">'+(isPaid(r)?'Unpay':'Mark paid')+'</button> '
+          +'<button class="btn-sm btn-ghost" onclick="openDays(\\''+r['ID']+'\\')">Days</button> '
           +'<button class="btn-sm btn-ghost" onclick="setCredit(\\''+r['ID']+'\\')">Credit</button> '
           +'<button class="btn-sm btn-ghost" onclick="openEdit(\\''+r['ID']+'\\')">Edit</button> '
           +'<button class="btn-sm btn-danger" onclick="cancelReg(\\''+r['ID']+'\\')">Cancel</button>'
@@ -597,16 +608,68 @@ function adminHtml_() {
     call('adminUpdate',[KEY,id,{'Credit':val}]).then(function(){r['Credit']=val;render();});
   }
 
+  // ---- Visual day editor (tap days on/off, auto-recalculates total) ----
+  var DAYS_ID=null, D_SEL=[], D_EXT=[];
+  function dayRateFor(n){if(n>=10)return 85;if(n>=5)return 90;return DAY_RATE;}
+  function openDays(id){
+    var r=byId(id);if(!r)return;
+    DAYS_ID=id;D_SEL=dayList(r['Days Requested']);D_EXT=dayList(r['Extended Days']);
+    renderDays();
+  }
+  function renderDays(){
+    var r=byId(DAYS_ID);
+    var rate=dayRateFor(D_SEL.length);
+    var total=D_SEL.length*rate+D_EXT.length*EXT_RATE;
+    var h='<h2>Edit days &mdash; '+esc(r['Child Name'])+'</h2>';
+    h+='<p class="muted">Tap a day to add or remove it. Tap the gray bar under a selected day to add the 1pm extended stay.</p>';
+    h+='<div class="daypick">';
+    SESSION.forEach(function(s,i){
+      var on=D_SEL.indexOf(s.label)>=0, ex=D_EXT.indexOf(s.label)>=0;
+      h+='<div class="dp '+(on?'on':'')+'">';
+      h+='<button type="button" class="dpd" onclick="tglDay('+i+')">'+(on?'[x] ':'[ ] ')+esc(s.label)+'</button>';
+      if(on)h+='<button type="button" class="dpx '+(ex?'exon':'')+'" onclick="tglExt('+i+')">'+(ex?'1pm stay ON (+$'+EXT_RATE+')':'+ add 1pm stay')+'</button>';
+      h+='</div>';
+    });
+    h+='</div>';
+    var disc=rate<DAY_RATE?(' &middot; $'+rate+'/day multi-day rate'):'';
+    h+='<div class="dptotal">New total: <b>$'+total+'</b> <span style="opacity:.8;font-size:13px">('+D_SEL.length+' day'+(D_SEL.length===1?'':'s')+(D_EXT.length?' + '+D_EXT.length+' ext':'')+disc+')</span></div>';
+    h+='<div class="modal-actions"><button class="btn-ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveDays()">Save days</button></div>';
+    document.getElementById('modal').innerHTML=h;document.getElementById('overlay').classList.add('show');
+  }
+  function tglDay(i){
+    var label=SESSION[i].label, k=D_SEL.indexOf(label);
+    if(k>=0){D_SEL.splice(k,1);var e=D_EXT.indexOf(label);if(e>=0)D_EXT.splice(e,1);}
+    else D_SEL.push(label);
+    renderDays();
+  }
+  function tglExt(i){
+    var label=SESSION[i].label, k=D_EXT.indexOf(label);
+    if(k>=0)D_EXT.splice(k,1);else D_EXT.push(label);
+    renderDays();
+  }
+  function saveDays(){
+    var order={};SESSION.forEach(function(s,i){order[s.label]=i;});
+    var sel=D_SEL.slice().sort(function(a,b){return order[a]-order[b];});
+    var ext=D_EXT.slice().sort(function(a,b){return order[a]-order[b];});
+    var rate=dayRateFor(sel.length);
+    var total=sel.length*rate+ext.length*EXT_RATE;
+    var patch={'Days Requested':sel.join(SEP),'Extended Days':ext.join(SEP),'Total $':total};
+    call('adminUpdate',[KEY,DAYS_ID,patch]).then(function(){
+      var r=byId(DAYS_ID);r['Days Requested']=patch['Days Requested'];r['Extended Days']=patch['Extended Days'];r['Total $']=total;
+      closeModal();buildDaySelect();render();
+    });
+  }
+
   function cancelReg(id){
     var r=byId(id);if(!r)return;
     if(!confirm('Cancel & delete '+r['Child Name']+'\\'s registration? This cannot be undone.'))return;
     call('adminCancel',[KEY,id]).then(function(){DATA=DATA.filter(function(x){return x['ID']!==id;});buildDaySelect();render();});
   }
 
-  var EDIT_FIELDS=['Parent First','Parent Last','Email','Phone','Address','Child Name','Child Age','Emergency Contact','Allergies / Restrictions','Notes','Days Requested','Extended Days','Total $','Pay Method'];
+  var EDIT_FIELDS=['Parent First','Parent Last','Email','Phone','Address','Child Name','Child Age','Emergency Contact','Allergies / Restrictions','Notes','Total $','Pay Method'];
 
   function openAdd(){
-    var h='<h2>Add registration</h2><p class="muted">Manually add a walk-up or phone signup. For Days/Extended use exactly: <i>Sat, Jun 27'+SEP+'Sun, Jun 28</i>. No emails are sent for manual adds.</p>';
+    var h='<h2>Add registration</h2><p class="muted">Manually add a walk-up or phone signup. After you create them, click the <b>Days</b> button on their row to pick their days. No emails are sent for manual adds.</p>';
     EDIT_FIELDS.forEach(function(f){
       var ml=(f==='Notes'||f==='Allergies / Restrictions'||f==='Address');
       h+='<label>'+f+'</label>'+(ml?'<textarea data-f="'+f+'" rows="2"></textarea>':'<input data-f="'+f+'" value="">');
@@ -623,7 +686,7 @@ function adminHtml_() {
 
   function openEdit(id){
     var r=byId(id);if(!r)return;
-    var h='<h2>Edit registration</h2><p class="muted">Tip: for Days/Extended use exactly: <i>Sat, Jun 27'+SEP+'Sun, Jun 28</i></p>';
+    var h='<h2>Edit registration</h2><p class="muted">To change which days they signed up for, use the <b>Days</b> button instead.</p>';
     EDIT_FIELDS.forEach(function(f){
       var ml=(f==='Notes'||f==='Allergies / Restrictions'||f==='Address');
       h+='<label>'+f+'</label>'+(ml?'<textarea data-f="'+f+'" rows="2">':'<input data-f="'+f+'" value="'+escAttr(r[f])+'">')+(ml?escAttr(r[f])+'</textarea>':'');
