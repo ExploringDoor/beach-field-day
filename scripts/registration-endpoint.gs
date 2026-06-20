@@ -320,7 +320,7 @@ function json_(obj) {
 function adminHtml_() {
   return `<!doctype html><html><head><meta charset="utf-8">
 <style>
-  :root{--sand:#F5E6C8;--sand-light:#FAF0DA;--ocean:#2B6B8C;--ocean-deep:#1A4A66;--sunset:#E87A4A;--sunset-deep:#C95A2E;--cream:#FFF8EC;--ink:#1F2D38;--ink-soft:#4A5763;}
+  :root{--sand:#F5E6C8;--sand-light:#FAF0DA;--ocean:#2B6B8C;--ocean-deep:#1A4A66;--sunset:#E87A4A;--sunset-deep:#C95A2E;--coral:#F4A776;--cream:#FFF8EC;--ink:#1F2D38;--ink-soft:#4A5763;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--cream);color:var(--ink);line-height:1.5;}
   .wrap{max-width:1200px;margin:0 auto;padding:16px;}
@@ -356,6 +356,8 @@ function adminHtml_() {
   th{background:var(--ocean-deep);color:#fff;text-align:left;padding:9px;position:sticky;top:0;white-space:nowrap;}
   td{padding:8px 9px;border-top:1px solid #eee;vertical-align:top;}
   tr.unpaid{background:#fff6f0;}
+  .dchips{display:flex;flex-wrap:wrap;gap:3px;max-width:230px;}
+  .dchip{background:#eef2f5;border-radius:6px;padding:1px 6px;font-size:11px;white-space:nowrap;color:var(--ink-soft);}
   .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;}
   .pill.paid{background:#dff3e4;color:#1e7a43;}
   .pill.no{background:#fde2d6;color:var(--sunset-deep);}
@@ -510,8 +512,8 @@ function adminHtml_() {
         +'<td><b>'+esc(r['Child Name'])+'</b></td><td>'+esc(r['Child Age'])+'</td>'
         +'<td>'+esc(r['Parent First'])+' '+esc(r['Parent Last'])+'<div class="muted">'+esc(r['Email'])+'</div></td>'
         +'<td>'+esc(r['Phone'])+'</td>'
-        +'<td>'+esc(pretty(r['Days Requested']))+'</td>'
-        +'<td>'+esc(pretty(r['Extended Days'])||'-')+'</td>'
+        +'<td><div class="dchips">'+dayChips(r['Days Requested'])+'</div></td>'
+        +'<td><div class="dchips">'+(dayList(r['Extended Days']).length?dayChips(r['Extended Days']):'<span class="muted">-</span>')+'</div></td>'
         +'<td>$'+esc(r['Total $'])+'</td><td>'+esc(r['Pay Method'])+'</td>'
         +'<td>'+(isPaid(r)?'<span class="pill paid">'+esc(r['Paid?'])+'</span>':'<span class="pill no">unpaid</span>')+'</td>'
         +'<td>'+(credit?'<span class="pill credit">'+esc(credit)+'</span>':'<span class="muted">-</span>')+'</td>'
@@ -715,6 +717,8 @@ function adminHtml_() {
   function byId(id){return DATA.filter(function(r){return r['ID']===id;})[0];}
   function pretty(s){return dayList(s).join(', ');}
   function dayList(s){return String(s||'').split(SEP).map(function(x){return x.trim();}).filter(Boolean);}
+  function shortDay(l){var p=String(l).split(', ');return p.length>1?p[1]:l;} // "Sat, Jun 27" -> "Jun 27"
+  function dayChips(s){return dayList(s).map(function(d){return '<span class="dchip">'+esc(shortDay(d))+'</span>';}).join('');}
   function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
   function escAttr(s){return esc(s).replace(/"/g,'&quot;');}
 </script>
