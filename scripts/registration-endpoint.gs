@@ -64,8 +64,13 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
     data.id = Utilities.getUuid();
     saveRow_(data);
-    notifyOwner_(data);
-    confirmParent_(data);
+    if (data.type === 'party') {
+      notifyOwnerParty_(data);
+      confirmParentParty_(data);
+    } else {
+      notifyOwner_(data);
+      confirmParent_(data);
+    }
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
@@ -302,6 +307,33 @@ function confirmParent_(d) {
 
 function pretty_(s) {
   return String(s || '').split(DAY_SEP).map(function (x) { return x.trim(); }).filter(String).join(', ');
+}
+
+// -- PARTY EMAILS (for /party RSVPs) --------------------------------------------
+function notifyOwnerParty_(d) {
+  var subject = 'PARTY RSVP: ' + (d.childName || 'child') + ' (' + (d.days || 'party') + ')';
+  var body =
+    'New Field Day Adventures PARTY RSVP\n\n' +
+    'Child: ' + d.childName + ' (age ' + (d.childAge || 'n/a') + ')\n' +
+    'Parent: ' + d.firstName + ' ' + d.lastName + '\n' +
+    'Email: ' + d.email + '\nPhone: ' + d.phone + '\n' +
+    'Emergency: ' + d.emergency + '\n' +
+    'Allergies/dietary: ' + d.allergies + '\n' +
+    'Details: ' + (d.notes || '-') + '\n' +
+    'Signed waiver: ' + (d.signature || '-') + '\n';
+  MailApp.sendEmail(OWNER_EMAIL, subject, body);
+}
+
+function confirmParentParty_(d) {
+  if (!d.email) return;
+  var subject = "You're all set for the party!";
+  var body =
+    'Hi ' + d.firstName + ',\n\n' +
+    'Thanks for RSVPing ' + d.childName + ' to the Field Day Adventures party! ' +
+    'We have your contact info, emergency details, and signed waiver on file.\n\n' +
+    'If anything changes or you have any questions, just reply to this email or text ' + CONTACT + '.\n\n' +
+    'See you there!\nField Day Adventures';
+  MailApp.sendEmail(d.email, subject, body);
 }
 
 // -- OUTPUT HELPERS -------------------------------------------------------------
