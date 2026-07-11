@@ -254,7 +254,7 @@ export default function PartyPage() {
         </form>
 
         <div className="mt-8 rounded-2xl border border-sunset/30 bg-sand-light/60 p-5">
-          <p className="mb-3 font-display text-[18px] font-bold text-ocean-deep">👟 What to bring</p>
+          <p className="mb-3 font-display text-[18px] font-bold text-ocean-deep">What to bring</p>
           <ul className="grid gap-2 text-[15px] font-medium text-ink-soft sm:grid-cols-3">
             <li>👟 Sneakers or sandals</li>
             <li>💧 Water bottle</li>
