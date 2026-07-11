@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import confetti from 'canvas-confetti'
 import { REGISTRATION_ENDPOINT, CONTACT_PHONE } from '../config.js'
 
 // ── PARTY DETAILS — edit these ───────────────────────────────────────────────
@@ -8,6 +9,19 @@ const PARTY = {
   date: 'Saturday, July 18',
   time: '11:00am',
   location: 'Atlantic Ave & S Pelham Ave, Longport NJ',
+  dateISO: '2026-07-18T11:00:00-04:00', // for the countdown timer
+}
+
+const PARTY_COLORS = ['#1A4A66', '#8BC53F', '#2B6B8C', '#ffffff', '#E87A4A']
+
+function fireConfetti() {
+  confetti({ particleCount: 130, spread: 95, startVelocity: 45, origin: { y: 0.6 }, colors: PARTY_COLORS })
+  const end = Date.now() + 900
+  ;(function frame() {
+    confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, colors: PARTY_COLORS })
+    confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, colors: PARTY_COLORS })
+    if (Date.now() < end) requestAnimationFrame(frame)
+  })()
 }
 
 const WAIVER_TEXT = `DISCLAIMER OF LIABILITY
@@ -41,6 +55,11 @@ export default function PartyPage() {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle')
+
+  // Celebrate on a successful RSVP.
+  useEffect(() => {
+    if (status === 'done') fireConfetti()
+  }, [status])
 
   function set(field, value) {
     setForm((f) => ({ ...f, [field]: value }))
@@ -148,6 +167,7 @@ export default function PartyPage() {
             alt={`${PARTY.title} — ${PARTY.date}, ${PARTY.time}, ${PARTY.location}`}
             className="mx-auto mb-6 w-full rounded-2xl shadow-lg"
           />
+          <Countdown iso={PARTY.dateISO} />
           <p className="mx-auto max-w-[520px] text-[16px] text-ink-soft">
             Please fill this out for each child attending so we have contact info, emergency details,
             and a signed waiver on file.
@@ -233,6 +253,52 @@ export default function PartyPage() {
           <p className="text-center text-[13px] text-ink-soft">Questions? Text {CONTACT_PHONE}.</p>
         </form>
       </main>
+    </div>
+  )
+}
+
+function Countdown({ iso }) {
+  const target = new Date(iso).getTime()
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  const diff = target - now
+  if (diff <= 0) {
+    return (
+      <div className="mb-6 rounded-2xl bg-ocean-deep px-5 py-4 text-center text-cream">
+        <span className="font-display text-[22px] font-black">It's party time! ⚽🎉</span>
+      </div>
+    )
+  }
+  const days = Math.floor(diff / 86400000)
+  const hrs = Math.floor((diff % 86400000) / 3600000)
+  const mins = Math.floor((diff % 3600000) / 60000)
+  const secs = Math.floor((diff % 60000) / 1000)
+  return (
+    <div className="mb-6 rounded-2xl bg-ocean-deep px-5 py-4 text-center text-cream">
+      <div className="mb-2 text-[12px] font-bold uppercase tracking-[0.1em] text-sand-light">
+        ⚽ Party starts in
+      </div>
+      <div className="flex justify-center gap-3 sm:gap-5">
+        <TimeBox n={days} label="days" />
+        <TimeBox n={hrs} label="hrs" />
+        <TimeBox n={mins} label="min" />
+        <TimeBox n={secs} label="sec" />
+      </div>
+    </div>
+  )
+}
+
+function TimeBox({ n, label }) {
+  return (
+    <div className="min-w-[52px]">
+      <div className="font-display text-[clamp(28px,7vw,40px)] font-black leading-none text-coral">
+        {String(n).padStart(2, '0')}
+      </div>
+      <div className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-sand-light">{label}</div>
     </div>
   )
 }
