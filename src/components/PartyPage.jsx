@@ -143,11 +143,14 @@ export default function PartyPage() {
       <PartyHeader />
       <main className="mx-auto max-w-[680px] px-5 pb-28 pt-28 sm:pt-32">
         <div className="mb-8 text-center">
-          <span className="section-eyebrow">Party RSVP</span>
-          <h1 className="mx-auto text-[clamp(30px,6vw,46px)] text-ocean-deep">{PARTY.title} 🎉</h1>
-          <p className="mx-auto mt-3 max-w-[520px] text-[16px] text-ink-soft">
-            {PARTY.date}{PARTY.time ? ` · ${PARTY.time}` : ''} · {PARTY.location}. Please fill this out for
-            each child attending so we have contact info, emergency details, and a signed waiver on file.
+          <img
+            src="/party-flyer.jpg"
+            alt={`${PARTY.title} — ${PARTY.date}, ${PARTY.time}, ${PARTY.location}`}
+            className="mx-auto mb-6 w-full max-w-[440px] rounded-2xl shadow-lg"
+          />
+          <p className="mx-auto max-w-[520px] text-[16px] text-ink-soft">
+            Please fill this out for each child attending so we have contact info, emergency details,
+            and a signed waiver on file.
           </p>
         </div>
 
