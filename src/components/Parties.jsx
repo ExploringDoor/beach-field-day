@@ -17,7 +17,7 @@ export default function Parties() {
             Now booking
           </span>
           <h2 className="relative z-10 mx-auto max-w-[720px] text-[clamp(30px,5vw,48px)] text-cream">
-            We host <em className="font-display italic font-semibold text-coral">birthday parties</em>! 🎉
+            We host birthday <em className="font-display italic font-semibold text-coral">parties</em>! 🎉
           </h2>
           <p className="relative z-10 mx-auto mt-4 max-w-[560px] text-[17px] text-cream/90">
             Give your kid a birthday they'll never forget. We bring the sports, games, and field-day fun —
