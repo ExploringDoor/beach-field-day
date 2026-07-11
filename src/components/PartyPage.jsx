@@ -174,15 +174,6 @@ export default function PartyPage() {
           </p>
         </div>
 
-        <div className="mb-6 rounded-2xl border border-sunset/30 bg-sand-light/60 p-5">
-          <p className="mb-3 font-display text-[18px] font-bold text-ocean-deep">👟 What to bring</p>
-          <ul className="grid gap-2 text-[15px] font-medium text-ink-soft sm:grid-cols-3">
-            <li>👟 Sneakers or sandals</li>
-            <li>💧 Water bottle</li>
-            <li>☀️ Sunscreen</li>
-          </ul>
-        </div>
-
         <form onSubmit={handleSubmit} noValidate className="space-y-6">
           <Section title="Parent / Guardian">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -261,6 +252,15 @@ export default function PartyPage() {
           </button>
           <p className="text-center text-[13px] text-ink-soft">Questions? Text {CONTACT_PHONE}.</p>
         </form>
+
+        <div className="mt-8 rounded-2xl border border-sunset/30 bg-sand-light/60 p-5">
+          <p className="mb-3 font-display text-[18px] font-bold text-ocean-deep">👟 What to bring</p>
+          <ul className="grid gap-2 text-[15px] font-medium text-ink-soft sm:grid-cols-3">
+            <li>👟 Sneakers or sandals</li>
+            <li>💧 Water bottle</li>
+            <li>☀️ Sunscreen</li>
+          </ul>
+        </div>
       </main>
     </div>
   )
