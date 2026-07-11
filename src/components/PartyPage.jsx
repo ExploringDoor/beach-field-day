@@ -144,9 +144,9 @@ export default function PartyPage() {
       <main className="mx-auto max-w-[680px] px-5 pb-28 pt-28 sm:pt-32">
         <div className="mb-8 text-center">
           <img
-            src="/party-flyer.jpg"
+            src="/party-flyer-v2.jpg"
             alt={`${PARTY.title} — ${PARTY.date}, ${PARTY.time}, ${PARTY.location}`}
-            className="mx-auto mb-6 w-full max-w-[440px] rounded-2xl shadow-lg"
+            className="mx-auto mb-6 w-full rounded-2xl shadow-lg"
           />
           <p className="mx-auto max-w-[520px] text-[16px] text-ink-soft">
             Please fill this out for each child attending so we have contact info, emergency details,
