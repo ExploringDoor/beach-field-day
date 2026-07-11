@@ -4,6 +4,7 @@ import About from './components/About.jsx'
 import Activities from './components/Activities.jsx'
 import OurSpot from './components/OurSpot.jsx'
 import Pricing from './components/Pricing.jsx'
+import Parties from './components/Parties.jsx'
 import ParentInfo from './components/ParentInfo.jsx'
 import FAQ from './components/FAQ.jsx'
 import FinalCTA from './components/FinalCTA.jsx'
@@ -23,6 +24,7 @@ export default function App() {
       <Activities />
       <OurSpot />
       <Pricing />
+      <Parties />
       <ParentInfo />
       <FAQ />
       <FinalCTA />
