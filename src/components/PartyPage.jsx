@@ -56,7 +56,6 @@ export default function PartyPage() {
     if (!form.childName.trim()) e.childName = 'Required'
     if (!form.childAge.trim()) e.childAge = 'Required'
     if (!form.emergency.trim()) e.emergency = 'Required'
-    if (!form.allergies.trim()) e.allergies = 'Required (write "None" if none)'
     if (!form.attendance) e.attendance = 'Required'
     if (form.attendance === 'Dropping off' && !form.pickup.trim()) e.pickup = 'Required for drop-off'
     if (!form.waiverAgree) e.waiverAgree = 'You must agree to register'
@@ -186,10 +185,7 @@ export default function PartyPage() {
             <Field label="Emergency contact & number" required error={errors.emergency} hint="Someone other than the parent above.">
               <input className="bfd-input" value={form.emergency} onChange={(e) => set('emergency', e.target.value)} />
             </Field>
-            <Field label="Allergies or dietary restrictions?" required error={errors.allergies} hint='Important for snacks/cake. Write "None" if not applicable.' className="mt-4">
-              <textarea rows={2} className="bfd-input" value={form.allergies} onChange={(e) => set('allergies', e.target.value)} />
-            </Field>
-            <Field label="Anything else we should know?" className="mt-4">
+            <Field label="Anything we should know? (allergies, medical, etc.)" className="mt-4">
               <textarea rows={2} className="bfd-input" value={form.notes} onChange={(e) => set('notes', e.target.value)} />
             </Field>
           </Section>
