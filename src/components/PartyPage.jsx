@@ -145,8 +145,7 @@ export default function PartyPage() {
           <h1 className="text-[clamp(28px,6vw,42px)] text-ocean-deep">You're all set! 🎉</h1>
           <p className="mx-auto mt-3 max-w-[440px] text-[16px] text-ink-soft">
             Thanks, {form.firstName} — we've got {form.childName}'s RSVP, emergency info, and signed waiver for
-            {' '}<strong className="text-ocean-deep">{PARTY.title}</strong>. A confirmation email is on its way to{' '}
-            <strong>{form.email}</strong>.
+            {' '}<strong className="text-ocean-deep">{PARTY.title}</strong>.
           </p>
           <p className="mx-auto mt-4 text-[15px] text-ink-soft">
             Questions? Text {CONTACT_PHONE}. See you there!

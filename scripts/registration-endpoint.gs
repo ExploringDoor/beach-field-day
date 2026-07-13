@@ -66,7 +66,7 @@ function doPost(e) {
     saveRow_(data);
     if (data.type === 'party') {
       notifyOwnerParty_(data);
-      confirmParentParty_(data);
+      // No confirmation email is sent to party parents (on-screen confirmation only).
     } else {
       notifyOwner_(data);
       confirmParent_(data);
